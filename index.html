@@ -45,9 +45,11 @@ body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none;color:var(--i
   background:radial-gradient(120% 80% at 50% 0%,var(--trench) 0%,var(--abyss) 70%)}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0}
 button:focus-visible,input:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
-#app{position:relative;height:100%;max-width:560px;margin:0 auto;overflow:hidden;touch-action:none;
+#app{position:relative;height:100%;max-width:560px;margin:0 auto;overflow:hidden;
   user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;background:var(--abyss)}
-#sea{position:absolute;inset:0;width:100%;height:100%;display:block}
+#sea{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#app button{touch-action:manipulation}
+@supports (height:100dvh){html,body{height:100dvh}}
 
 .glass{background:linear-gradient(180deg,var(--glass-hi),var(--glass));border:1px solid var(--edge);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 16px rgba(90,190,255,.16),0 6px 18px rgba(0,0,0,.35);
@@ -90,8 +92,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--glow);outline-o
 .iconbtn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center}
 .iconbtn .ico{width:24px;height:24px}
 
-.chips{position:absolute;top:82px;left:max(12px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 96px)}
-.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:1;padding:6px 10px;border-radius:20px;white-space:nowrap;
+.chips{position:absolute;top:82px;left:max(12px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:5px;max-width:calc(100% - 92px)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;line-height:1;padding:6px 9px;border-radius:20px;white-space:nowrap;
   background:rgba(4,16,36,.6);border:1px solid rgba(140,222,255,.2);color:#d6e8fb}
 .chip .hrt{color:var(--rose)}
 .chip b{font-weight:700;font-variant-numeric:tabular-nums}
@@ -138,7 +140,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--glow);outline-o
 .sheet h2{margin:0;font-family:var(--f-display);font-weight:500;font-size:20px;letter-spacing:.06em;color:#f0f8ff;text-shadow:0 0 12px rgba(143,227,255,.5)}
 .sheet .x{width:36px;height:36px;border-radius:50%;font-size:20px;line-height:1;background:rgba(255,255,255,.08)}
 .sheet-body{overflow:auto;padding:4px max(18px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
-  user-select:text;-webkit-user-select:text}
+  user-select:text;-webkit-user-select:text;touch-action:pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .lead{margin:2px 0 14px;font-size:13px;line-height:1.7;color:var(--mute)}
 .foodgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .card{border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(140,222,255,.22)}
@@ -201,13 +203,23 @@ input[type=text]{height:42px;flex:1;min-width:0;padding:0 14px;border-radius:12p
 .startcard .btn{height:52px;border-radius:26px;font-family:var(--f-display);font-weight:500;font-size:18px;letter-spacing:.1em}
 .linkbtn{font-size:12px;color:var(--mute);text-decoration:underline;text-underline-offset:3px;align-self:center;padding:4px}
 
+.veil{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  background:radial-gradient(120% 80% at 50% 0%,var(--trench) 0%,var(--abyss) 70%);transition:opacity .6s}
+.veil.off{opacity:0;pointer-events:none}
+.veil p{margin:0;font-family:var(--f-hand);font-size:15px;letter-spacing:.18em;color:#cfe8ff}
+.veil-bubbles{display:flex;gap:12px;align-items:flex-end;height:40px}
+.veil-bubbles i{width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(190,235,255,.8);box-shadow:0 0 10px rgba(143,227,255,.6);animation:rise 1.6s ease-in-out infinite}
+.veil-bubbles i:nth-child(2){animation-delay:.25s;width:9px;height:9px}
+.veil-bubbles i:nth-child(3){animation-delay:.5s;width:14px;height:14px}
+@keyframes rise{0%,100%{transform:translateY(8px);opacity:.4}50%{transform:translateY(-14px);opacity:1}}
 @media (max-height:640px){
   .act{height:70px}.act .ico{width:30px;height:30px}
   .railbtn{height:54px;width:54px}
   #hint{bottom:94px}
 }
 @media (prefers-reduced-motion:reduce){
-  .toast,.sheet,.title,.hud{transition:none}
+  .toast,.sheet,.title,.hud,.veil{transition:none}
+  .veil-bubbles i{animation:none}
 }
 </style>
 
@@ -235,7 +247,7 @@ input[type=text]{height:42px;flex:1;min-width:0;padding:0 14px;border-radius:12p
 
     <div class="chips" aria-live="polite">
       <span class="chip"><span class="hrt">♥</span>なつき <b id="affNum">0</b></span>
-      <span class="chip" id="chipFast">まだごはんなし</span>
+      <span class="chip" id="chipFast">ごはん まだ</span>
       <span class="chip" id="chipMood">のんびり</span>
     </div>
 
@@ -264,6 +276,8 @@ input[type=text]{height:42px;flex:1;min-width:0;padding:0 14px;border-radius:12p
     <header><h2 id="sheetTitle"></h2><button class="x" id="sheetClose" aria-label="とじる">×</button></header>
     <div class="sheet-body" id="sheetBody"></div>
   </section>
+
+  <div class="veil" id="veil" role="status" aria-label="よみこみ中"><div class="veil-bubbles" aria-hidden="true"><i></i><i></i><i></i></div><p>深海へ もぐっています…</p></div>
 
   <div class="title" id="titleScreen">
     <div class="logoblock">
@@ -415,12 +429,17 @@ const ASSETS = ['bg_sea','gusoku_1','gusoku_2','gusoku_3','gusoku_4','gusoku_5',
 const IMG = {};
 function loadAssets(){
   ASSETS.forEach(n => {
-    const exts = ['png', 'webp'], im = new Image(); let i = 0;
-    im.onload = () => { IMG[n] = im; assetReady(n); };
-    im.onerror = () => { if (++i < exts.length) im.src = 'assets/' + n + '.' + exts[i]; };
+    const exts = ['webp', 'png'], im = new Image(); let i = 0;
+    im.onload = () => { IMG[n] = im; assetReady(n); keyDone(n); };
+    im.onerror = () => { if (++i < exts.length) im.src = 'assets/' + n + '.' + exts[i]; else keyDone(n); };
     im.src = 'assets/' + n + '.' + exts[0];
   });
 }
+// 背景・グソクムシ・ほら穴・ロゴがそろうまで 幕を下ろしておく（仮の絵が一瞬見えないように）
+const KEY_ASSETS = new Set(['bg_sea', 'gusoku_1', 'gusoku_2', 'gusoku_3', 'gusoku_4', 'gusoku_5', 'decor_cave', 'logo']);
+function keyDone(n){ if (KEY_ASSETS.delete(n) && !KEY_ASSETS.size) liftVeil(); }
+function liftVeil(){ const v = $('#veil'); if (v && !v.classList.contains('off')) { v.classList.add('off'); setTimeout(() => { v.hidden = true; }, 600); } }
+setTimeout(liftVeil, 6000);
 function assetReady(n){
   if (n === 'bg_sea') { resize(); }
   else if (n.startsWith('decor_')) buildDecor();
@@ -452,7 +471,7 @@ let st = fresh(), started = false, mode = 'normal';
 const g = {x:0.58, d:0.5, dir:-1, mode:'idle', tx:0.5, td:0.5, timer:1.5, walk:0, moving:0, bubble:null,
   petTimes:[], flipT:0, hideT:0, eatT:0, food:null, pauseT:0, expCd:0};
 let foods = [], parts = [], snow = [], jellies = [];
-let flipTimer = 50, dirtTimer = 160, saveTimer = 5, hudTimer = 0, calmAcc = 0, calmT = 0, calmDim = 0, ambT = 0, warmT = 0;
+let flipTimer = 240, dirtTimer = 160, saveTimer = 5, hudTimer = 0, calmAcc = 0, calmT = 0, calmDim = 0, ambT = 0, warmT = 0;
 let scrub = null, sponge = null, T = 0;
 
 /* ---------- 画面サイズと背景 ---------- */
@@ -1013,8 +1032,11 @@ function drawGusokuImg(c, o, img){
   c.scale(o.dir, 1);
   const mv = o.shell ? 0 : (o.moving || 0);
   const bob = -Math.abs(Math.sin(o.walk)) * L * 0.01 * mv;
-  if (o.upside) { c.translate(0, -h * 0.5); c.rotate(Math.PI + Math.sin(o.t * 12) * 0.05); c.translate(0, h * 0.5); }
-  else if (!o.shell) {
+  if (o.upside) {
+    // あおむけ：背中を地面につけて ゆらゆら。脚はばたつかせる
+    const rock = Math.sin(o.t * 3) * 0.16, kick = Math.sin(o.t * 22) * 0.012;
+    c.translate(0, -h * 0.42); c.rotate(Math.PI + rock); c.scale(1, 1 + kick); c.translate(0, h * 0.42);
+  } else if (!o.shell) {
     c.rotate(Math.sin(o.walk * 0.5) * 0.018 * mv + (o.eat ? Math.sin(o.t * 16) * 0.014 : 0));
     c.scale(1, 1 + 0.012 * Math.sin(o.t * 2.2));
   }
@@ -1088,6 +1110,12 @@ function drawG(c){
     c.fillStyle = gr; c.beginPath(); c.arc(x, y - L * 0.25, L * 0.8, 0, 7); c.fill();
   }
   paintGusoku(c, o, st.stage);
+  if (g.mode === 'flip') {
+    const r0 = L * 0.5, k = (T * 1.2) % 1;
+    c.save(); c.strokeStyle = `rgba(143,227,255,${0.7 * (1 - k)})`; c.lineWidth = 2.5;
+    c.beginPath(); c.ellipse(x, y - L * 0.2, r0 * (0.8 + k * 0.5), r0 * 0.42 * (0.8 + k * 0.5), 0, 0, 7); c.stroke(); c.restore();
+    if (!g.bubble) say('たすけて〜', 1.2);
+  }
   if (st.molt && Math.random() < 0.06) sparkle(x + rnd(-0.4, 0.4) * L, y - rnd(0.1, 0.5) * L, 1, '#f3ecff');
 }
 function drawSponge(c){
@@ -1295,9 +1323,9 @@ function update(dt){
   if (st.dirt.length >= 5) st.stress = Math.min(60, st.stress + dt * 0.25);
   flipTimer -= dt;
   if (flipTimer <= 0) {
-    if ((g.mode === 'idle' || g.mode === 'walk') && g.hideT <= 0 && mode !== 'photo') {
+    if ((g.mode === 'idle' || g.mode === 'walk') && g.hideT <= 0 && mode === 'normal' && sheet.hidden && st.lastFed) {
       g.mode = 'flip'; g.flipT = 0; g.pauseT = 0; say('!?', 2.4);
-      toast(`${st.name}が ひっくり返っちゃった！ タップして もどしてあげよう`); flipTimer = rnd(160, 320);
+      toast(`${st.name}が ひっくり返っちゃった！ タップして もどしてあげよう`); flipTimer = rnd(300, 600);
     } else flipTimer = 12;
   }
   dirtTimer -= dt; if (dirtTimer <= 0) { dirtTimer = rnd(120, 220); if (st.dirt.length < 8) st.dirt.push(mkDirt()); }
@@ -1345,7 +1373,7 @@ function hud(){
   $('#chipMood').textContent = moodText();
 }
 function fastText(){
-  if (!st.lastFed) { const d = Math.floor((Date.now() - st.created) / DAY); return d >= 1 ? `絶食 ${d}日目` : 'まだ ごはんなし'; }
+  if (!st.lastFed) { const d = Math.floor((Date.now() - st.created) / DAY); return d >= 1 ? `絶食 ${d}日目` : 'ごはん まだ'; }
   const e = Date.now() - st.lastFed;
   if (e < HOUR) return `ごはん ${Math.max(1, Math.floor(e / MIN))}分前`;
   if (e < DAY) return `ごはん ${Math.floor(e / HOUR)}時間前`;
@@ -1357,6 +1385,7 @@ function moodText(){
   if (g.hideT > 0) return 'かくれてる';
   if (st.stress >= 50) return 'ちょっとピリピリ';
   if (st.dirt.length >= 5) return 'よごれが 気になる';
+  if (st.lastFed && !hungry()) return 'おなかいっぱい';
   if (st.aff >= 80) return 'ごきげん';
   return 'のんびり';
 }
@@ -1561,7 +1590,7 @@ function begin(isNew){
   started = true; app.dataset.started = '1';
   $('#titleScreen').classList.add('hide'); setTimeout(() => { $('#titleScreen').hidden = true; }, 650);
   buildDecor(); g.hideT = 0; g.food = null; foods = [];
-  if (isNew) { toast(`${st.name}が やってきた！`); toast('まずは「エサ」を あげてみよう'); flipTimer = 50; }
+  if (isNew) { toast(`${st.name}が やってきた！`); toast('まずは「エサ」を あげてみよう'); flipTimer = 240; }
   else applyOffline();
   if (st.molt) g.mode = 'molt';
   hud(); save(); checkStage();
