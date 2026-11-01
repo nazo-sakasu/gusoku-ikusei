@@ -99,14 +99,50 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--glow);outline-o
 .chip b{font-weight:700;font-variant-numeric:tabular-nums}
 
 .rail{position:absolute;top:82px;right:max(12px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:10px}
-.railbtn{width:60px;height:62px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;font-weight:700}
+.railbtn{position:relative;width:60px;height:60px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;font-weight:700}
 .railbtn .ico{width:28px;height:28px}
+.railbtn .dot{position:absolute;top:6px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--rose);box-shadow:0 0 8px var(--rose)}
+#digBar,#layoutBar{bottom:112px}
+#digBar{white-space:normal;width:calc(100% - 24px);max-width:440px;justify-content:space-between;padding:8px 8px 8px 16px;border-radius:22px}
+#digBar span{font-size:12.5px;line-height:1.5}
+#digBar .btn{flex:none}
+#layoutBar{bottom:28px;gap:8px;white-space:normal;width:calc(100% - 24px);max-width:440px;padding:8px 8px 8px 14px;border-radius:22px}
+#layoutBar span{flex:1;font-size:12.5px;line-height:1.5}
+#layoutBar .btn{flex:none;padding:0 12px}
+#app[data-mode="layout"] .hud{opacity:0}
+#app[data-mode="layout"] .hud>*{pointer-events:none}
+.grow{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:start;padding:10px;margin-bottom:10px}
+.grow canvas{width:96px;height:64px;border-radius:10px;display:block}
+.grow b{display:block;font-size:14px}
+.grow small{display:block;font-size:12px;line-height:1.65;color:#c3d6ec;margin-top:3px}
+.grow.lock small{color:var(--mute)}
+.grow .cnt{display:inline-block;margin-top:6px;font-size:11px;color:var(--amber)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tcard{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;text-align:center;min-width:0}
+.tcard canvas{width:64px;height:64px;display:block}
+.tcard b{font-size:12px}
+.tcard small{font-size:11px;color:var(--mute);line-height:1.5}
+.tcard.lock b{color:var(--mute)}
+.tabs{gap:2px;max-width:100%}
+.tabs button{padding:0 9px;font-size:12.5px;white-space:nowrap}
+.persona{padding:12px 14px}
+.persona b{font-family:var(--f-display);font-weight:500;font-size:17px;color:#f0f8ff}
+.persona p{margin:4px 0 0;font-size:13px;line-height:1.7;color:#c9dcf0}
+.diary{display:flex;flex-direction:column;gap:18px}
+.dday h3{margin:0 0 8px;font-size:12px;letter-spacing:.12em;color:var(--amber);font-weight:700}
+.dday ol{list-style:none;margin:0;padding:0 0 0 14px;border-left:1px dashed rgba(140,222,255,.35);display:flex;flex-direction:column;gap:12px}
+.dday li{position:relative;display:grid;grid-template-columns:3.6em 1fr;gap:8px;align-items:baseline}
+.dday li::before{content:"";position:absolute;left:-19px;top:.55em;width:8px;height:8px;border-radius:50%;background:#2c5a8f;box-shadow:0 0 0 2px rgba(5,16,34,.98)}
+.dday li.new::before{background:var(--glow);box-shadow:0 0 0 2px rgba(5,16,34,.98),0 0 10px var(--glow)}
+.dday time{font-size:12px;color:var(--mute)}
+.dday p{margin:0;font-family:var(--f-hand);font-size:15px;line-height:1.75;color:#e6f2ff}
+.empty{padding:24px 8px;text-align:center;color:var(--mute);font-size:13px;line-height:1.8}
 
 .actions{position:absolute;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:12px;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.act{height:86px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700;letter-spacing:.04em;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.act{height:80px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:700;letter-spacing:0;white-space:nowrap;
   transition:transform .12s,box-shadow .2s,border-color .2s}
-.act .ico{width:42px;height:42px;color:#f3ebff}
+.act .ico{width:38px;height:38px;color:#f3ebff}
 .act:active,.railbtn:active,.iconbtn:active{transform:scale(.95)}
 .act.on{border-color:var(--glow);box-shadow:inset 0 0 18px rgba(143,227,255,.35),0 0 22px rgba(143,227,255,.45)}
 
@@ -213,9 +249,10 @@ input[type=text]{height:42px;flex:1;min-width:0;padding:0 14px;border-radius:12p
 .veil-bubbles i:nth-child(3){animation-delay:.5s;width:14px;height:14px}
 @keyframes rise{0%,100%{transform:translateY(8px);opacity:.4}50%{transform:translateY(-14px);opacity:1}}
 @media (max-height:640px){
-  .act{height:70px}.act .ico{width:30px;height:30px}
-  .railbtn{height:54px;width:54px}
-  #hint{bottom:94px}
+  .act{height:66px}.act .ico{width:28px;height:28px}
+  .railbtn{height:50px;width:52px;font-size:10px}.railbtn .ico{width:22px;height:22px}
+  .rail{gap:7px}
+  #hint,#digBar{bottom:86px}
 }
 @media (prefers-reduced-motion:reduce){
   .toast,.sheet,.title,.hud,.veil{transition:none}
@@ -253,6 +290,7 @@ input[type=text]{height:42px;flex:1;min-width:0;padding:0 14px;border-radius:12p
 
     <nav class="rail" aria-label="メニュー">
       <button class="railbtn glass" id="btnZukan"><span class="ico" data-asset="ui_zukan"><svg viewBox="0 0 24 24"><path d="M3 5.5c2.5-1 5.5-1 9 .5 3.5-1.5 6.5-1.5 9-.5V19c-2.5-1-5.5-1-9 .5-3.5-1.5-6.5-1.5-9-.5z"/><path d="M12 6v13.5"/></svg></span>ずかん</button>
+      <button class="railbtn glass" id="btnDiary"><span class="ico" data-asset="ui_diary"><svg viewBox="0 0 24 24"><path d="M5 3.5h11a2 2 0 0 1 2 2v15H7a2 2 0 0 1-2-2z"/><path d="M5 18.5a2 2 0 0 1 2-2h11"/><path d="M9 8h6M9 11.5h4"/></svg></span>にっき<i class="dot" id="diaryDot" hidden></i></button>
       <button class="railbtn glass" id="btnCamera"><span class="ico" data-asset="ui_camera"><svg viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg></span>カメラ</button>
       <button class="railbtn glass" id="btnSumika"><span class="ico" data-asset="ui_sumika"><svg viewBox="0 0 24 24"><path d="M2.5 19.5h19"/><path d="M4.5 19.5v-5a7.5 7.5 0 0 1 15 0v5"/><path d="M9.5 19.5V16a2.5 2.5 0 0 1 5 0v3.5"/></svg></span>すみか</button>
     </nav>
@@ -261,11 +299,14 @@ input[type=text]{height:42px;flex:1;min-width:0;padding:0 14px;border-radius:12p
       <button class="act glass" id="actFeed"><span class="ico" data-asset="ui_feed"><svg viewBox="0 0 24 24"><path d="M2.5 12c3-4.8 9.5-6 14.5-2l4-3v10l-4-3c-5 4-11.5 2.8-14.5-2z"/><circle cx="7.5" cy="11.2" r=".9" fill="currentColor"/><path d="M11 9.5c.8 1.6.8 3.4 0 5"/></svg></span>エサ</button>
       <button class="act glass" id="actClean"><span class="ico" data-asset="ui_clean"><svg viewBox="0 0 24 24"><rect x="3.5" y="11" width="13" height="8.5" rx="2.5"/><path d="M6.5 11V8.5A2.5 2.5 0 0 1 9 6h2a2.5 2.5 0 0 1 2.5 2.5V11"/><path d="M19 3.5l.9 1.9 1.9.9-1.9.9L19 9.1l-.9-1.9-1.9-.9 1.9-.9z"/><circle cx="20" cy="13.5" r="1.2"/></svg></span>おそうじ</button>
       <button class="act glass" id="actPet"><span class="ico" data-asset="ui_pet"><svg viewBox="0 0 24 24"><path d="M8 13.5V6a1.5 1.5 0 0 1 3 0v5.5M11 11.5V4.5a1.5 1.5 0 0 1 3 0v7M14 11.5V6a1.5 1.5 0 0 1 3 0v8"/><path d="M8 13.5l-1.7-1.9a1.6 1.6 0 0 0-2.4 2.1l3.8 4.6a5.5 5.5 0 0 0 4.2 2h.6a5.5 5.5 0 0 0 5.5-5.5V14"/></svg></span>なでる</button>
+      <button class="act glass" id="actPlay"><span class="ico" data-asset="ui_play"><svg viewBox="0 0 24 24"><path d="M14.5 3.5l6 6"/><path d="M17.5 6.5L9 15"/><path d="M9 15l-3.5-1-2 2.5 4 4 2.5-2z"/><path d="M5 5.5l.6 1.4 1.4.6-1.4.6L5 9.5l-.6-1.4L3 7.5l1.4-.6z"/></svg></span>あそぶ</button>
       <button class="act glass" id="actCalm"><span class="ico" data-asset="ui_calm"><svg viewBox="0 0 24 24"><path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10z"/><path d="M15 4h3.5L15 8h3.5"/></svg></span>そっとする</button>
     </nav>
   </div>
 
   <div class="bar glass" id="hint" hidden><span>よごれを 指でこすって 落とそう</span><button class="btn" id="hintDone">おわる</button></div>
+  <div class="bar glass" id="digBar" hidden><span id="digText">くんくんしている ところを ほってみよう</span><button class="btn" id="digDone">おわる</button></div>
+  <div class="bar glass" id="layoutBar" hidden><span>飾りを ゆびで 動かそう</span><button class="btn" id="layoutReset">もとにもどす</button><button class="btn primary" id="layoutDone">できた</button></div>
   <div class="bar glass" id="calmBar" hidden><p>そっと 見守っています<b id="calmTime">0:00</b></p><button class="btn" id="calmEnd">見守りをやめる</button></div>
   <div class="bar" id="photoBar" hidden><button class="btn" id="photoClose">とじる</button><button class="shutter" id="shutter" aria-label="しゃしんを撮る"></button><span style="width:70px" aria-hidden="true"></span></div>
   <div class="flash" id="flash"></div>
@@ -333,6 +374,8 @@ const TINT = {
   snow:  [['saturation', 'rgb(128,128,128)'], ['screen', 'rgba(60,64,72,1)']],
   nushi: [['color', 'rgba(235,190,70,.88)'], ['soft-light', 'rgba(255,230,150,.5)']],
   lock:  [['source-in', '#122a50']],
+  shadow:[['source-in', '#0d2142']],
+  daiou: [['color', 'rgba(205,175,125,.7)'], ['multiply', 'rgba(215,205,190,1)']],
 };
 const tintCache = {};
 function tinted(img, key){
@@ -407,6 +450,75 @@ const TRIVIA = [
   {lv:10, t:'すんでいる深さ',       b:'オオグソクムシは、日本近海の 水深150〜600mほどの 海底にすんでいる。'},
 ];
 
+/* ---------- 性格 ---------- */
+const PERSONAS = {
+  kuishinbo: {name:'くいしんぼう', desc:'ごはんが 大好き。おなかが すくのが はやい。', full:0.5, speed:1.1,
+    lines:['おなか すいた…', 'なにか おちてこないかな', 'エビの ゆめを みた'], diary:'エサが 落ちてこないか、ずっと 上を 見あげていた', eat:'おいしい〜！ もっと！', clue:'エサの 時間を いつも 気にしているみたい'},
+  kowagari: {name:'こわがり', desc:'お客さんが 来ると ほら穴に かくれる。なですぎにも 弱い。', stress:1.6, shy:true,
+    lines:['…だれか いる？', 'そーっと…', 'びくっ'], diary:'物音に びっくりして、しばらく 岩かげに いた', clue:'知らない 生きものが 来ると、そわそわしている'},
+  nebosuke: {name:'ねぼすけ', desc:'よく ねている。そっと 見守ると よろこぶ。', idle:1.8, calm:2, speed:0.85,
+    lines:['zzz…', 'ふぁ〜', 'あと5分…'], diary:'ほとんど ねていた。ときどき ねがえりを うっていた', clue:'じっとしている 時間が 長いみたい'},
+  amaenbo: {name:'あまえんぼう', desc:'なでられるのが 大好き。なつきやすい。', aff:2, stress:0.6,
+    lines:['なでて〜', 'こっち 見て', 'すりすり'], diary:'キミが 来るのを、ずっと 入口のほうで 待っていた', clue:'なでられると、とても うれしそう'},
+  boukenzuki: {name:'ぼうけんずき', desc:'よく 歩きまわる。たからさがしが とくい。', speed:1.35, idle:0.6, treasure:1,
+    lines:['あっちに 何か ある！', 'たんけん たんけん', 'くんくん'], diary:'すみかの すみずみまで たんけんしていた', clue:'すみかの あちこちを 歩きまわっている'},
+  nonbiri: {name:'のんびりや', desc:'マイペース。なにが あっても 動じない。', speed:0.75, brave:true,
+    lines:['のんびり いこう', 'ふぅ…', 'いい ながめ'], diary:'ほとんど 動かずに、のんびり すごしていた', clue:'なにが あっても あまり 気にしないみたい'},
+};
+const PERSONA_IDS = Object.keys(PERSONAS);
+const P = k => (PERSONAS[st.persona] || PERSONAS.nonbiri)[k];
+const REVEAL_DAY = 5;   // せいかくが わかる日（はじめた日を 1日目として数える）
+function dayNum(){ const a = new Date(st.created), b = new Date(); a.setHours(0, 0, 0, 0); b.setHours(0, 0, 0, 0); return Math.round((b - a) / DAY) + 1; }
+const personaKnown = () => !!st.personaKnown;
+function checkPersonaReveal(){
+  if (!started || st.personaKnown || dayNum() < REVEAL_DAY) return;
+  st.personaKnown = true;
+  toast(`いっしょに すごして ${REVEAL_DAY}日目。${st.name}の せいかくが わかってきた！`);
+  toast(`${st.name}は「${P('name')}」みたい`);
+  addDiary(`せいかくが わかってきた。「${P('name')}」みたい。${P('desc')}`);
+  const h = headPos(); sparkle(h.x, h.y - 20 * K, 16, '#ffe9a8'); say('！', 1.6); save();
+}
+
+/* ---------- お客さんの生きもの ---------- */
+const isNight = () => { const h = new Date().getHours(); return h >= 18 || h < 6; };
+const GUESTS = [
+  {id:'mendako', name:'メンダコ', move:'swim', size:0.15, w:30, hr:0.36,
+    fact:'タコの なかま。耳のように 見えるのは ヒレで、これを パタパタ 動かして 泳ぐ。水深 200〜1000mほどの 海の底に すむ。', hint:'ときどき ふわふわ 泳いでくるらしい'},
+  {id:'nuta', name:'ヌタウナギ', move:'floor', size:0.3, w:24, hr:0.1,
+    fact:'あごの ない、とても古いタイプの 魚。敵に おそわれると、体から 大量の ネバネバを 出して 身を守る。', hint:'海の底を にょろにょろ 通っていくらしい'},
+  {id:'takaashi', name:'タカアシガニ', move:'floor', size:0.42, w:18, hr:0.32,
+    fact:'あしを 広げると 3mを こえることも ある、世界最大級の カニ。日本の まわりの 深い海に すんでいる。', hint:'長い あしで 海の底を 歩いてくるらしい'},
+  {id:'anko', name:'チョウチンアンコウ', move:'swim', size:0.18, w:18, hr:0.34, need:s => s.placed.includes('lantern'),
+    fact:'頭の先の「ちょうちん」を 光らせて、小さな魚を おびきよせる。光っているのは、ちょうちんの中に すむ 光る細菌。', hint:'ガラスのランタンの 灯りに さそわれて 来るらしい'},
+  {id:'koshiori', name:'ゴエモンコシオリエビ', move:'floor', size:0.11, w:16, hr:0.28, need:s => s.placed.includes('chimney'),
+    fact:'海の底から 熱い水が わき出る 場所の 近くに すむ。胸の 毛で 細菌を 育てて、それを 食べていると 考えられている。', hint:'熱水チムニーの そばに あらわれるらしい'},
+  {id:'daiou', name:'ダイオウグソクムシ', move:'floor', size:0.38, w:10, hr:0.2, need:s => s.placed.includes('whalebone'),
+    fact:'グソクムシの なかまでも 最大級。体長 40cmを こえることも ある。クジラなどの 死がいに 集まって 食べる。', hint:'クジラの骨に ひきよせられて 来るらしい'},
+  {id:'mitsukuri', name:'ミツクリザメ', move:'swim', size:0.46, w:10, hr:0.12, need:s => s.placed.includes('ship'),
+    fact:'長く つき出た 鼻先が 目じるしの 深海ザメ。えものを とるとき、アゴが 大きく 前に 飛び出す。', hint:'しずんだ船の あたりを 泳いでいるらしい'},
+  {id:'ryugu', name:'リュウグウノツカイ', move:'swim', size:0.95, w:5, hr:0.07, need:() => isNight(),
+    fact:'銀色の 長い体に、赤い ヒレを もつ 深海魚。体長 3mを こえることも ある。', hint:'夜（18時〜朝6時）にだけ すがたを 見せるらしい'},
+  {id:'ika', name:'ダイオウイカ', move:'far', size:1.15, w:4, hr:0.13, need:s => lvOf(s.exp).lv >= 8,
+    fact:'全長 10mを こえることも ある 巨大な イカ。生きた すがたが はじめて 撮影されたのは 2000年代に なってから。', hint:'Lv.8を こえると、遠くに 影が 見えるらしい'},
+];
+const GMAP = Object.fromEntries(GUESTS.map(x => [x.id, x]));
+
+/* ---------- たからもの ---------- */
+const TREASURES = [
+  {id:'coinbag', name:'コインのふくろ', w:30, coins:25, desc:'だれかが 落とした コインの ふくろ。'},
+  {id:'shell', name:'ふしぎな貝がら', w:22, coins:10, desc:'虹色に ひかる 貝がら。'},
+  {id:'ukidama', name:'ガラスの浮き玉', w:16, coins:15, desc:'むかし 漁で つかわれていた ガラスの うき。'},
+  {id:'tooth', name:'サメの歯の化石', w:12, coins:20, desc:'とても 大きな サメの 歯の 化石。'},
+  {id:'goldcoin', name:'古い金貨', w:8, coins:40, desc:'しずんだ船から こぼれ落ちた 金貨かも。'},
+  {id:'gem', name:'深海の宝石', w:4, coins:80, desc:'青く ひかる ふしぎな 石。とても めずらしい。'},
+];
+const TMAP = Object.fromEntries(TREASURES.map(x => [x.id, x]));
+
+/* ---------- すみかの配置（x：左右 0〜1、v：奥 0 〜 手前 1） ---------- */
+const DEF_LAYOUT = {chimney:{x:0.12, v:0.05}, ship:{x:0.75, v:0.13}, whalebone:{x:0.43, v:0.24}, cave:{x:0.2, v:0.71}, coral:{x:0.88, v:0.9}, lantern:{x:0.66, v:0.72}};
+const DBASE = {chimney:0.19, ship:0.3, whalebone:0.21, cave:0.25, coral:0.12, lantern:0.035};
+const depthScale = v => 0.6 + 0.45 * v;
+
 /* ---------- 小さな道具 ---------- */
 const rnd = (a, b) => a + Math.random() * (b - a);
 const pick = a => a[Math.floor(Math.random() * a.length)];
@@ -425,7 +537,10 @@ function fmtDur(ms){if(ms<HOUR)return Math.max(1,Math.round(ms/MIN))+'分';if(ms
 const ASSETS = ['bg_sea','gusoku_1','gusoku_2','gusoku_3','gusoku_4','gusoku_5','gusoku_shell','jelly',
   'decor_cave','decor_coral','decor_lantern','decor_whalebone','decor_chimney','decor_ship',
   'food_saba','food_ika','food_ebi','food_deep',
-  'ui_feed','ui_clean','ui_pet','ui_calm','ui_zukan','ui_camera','ui_sumika','ui_settings','ui_coin','logo'];
+  'ui_feed','ui_clean','ui_pet','ui_calm','ui_zukan','ui_camera','ui_sumika','ui_settings','ui_coin','logo',
+  'ui_play','ui_diary',
+  'guest_mendako','guest_anko','guest_nuta','guest_takaashi','guest_koshiori','guest_daiou','guest_mitsukuri','guest_ryugu','guest_ika',
+  'treasure_coinbag','treasure_shell','treasure_ukidama','treasure_tooth','treasure_goldcoin','treasure_gem'];
 const IMG = {};
 function loadAssets(){
   ASSETS.forEach(n => {
@@ -461,7 +576,8 @@ function fresh(name){
   const now = Date.now();
   return {v:1, name: name || 'ぐそくん', created: now, lastSeen: now, exp:0, coins:150, aff:10, stress:0, lastFed:null,
     variant:'pearl', unlocked:['pearl'], owned:['cave'], placed:['cave'], stage:0, molts:0, molt:null,
-    maxFast:0, cleaned:0, flips:0, dirt:[mkDirt(0.36, 0.7), mkDirt(0.72, 0.3)], shells:[], seenFullTip:false};
+    maxFast:0, cleaned:0, flips:0, dirt:[mkDirt(0.36, 0.7), mkDirt(0.72, 0.3)], shells:[], seenFullTip:false,
+    persona:pick(PERSONA_IDS), personaKnown:false, diary:[], diaryRead:now, guests:{}, heard:[], treasures:{}, dig:null, layout:{}};
 }
 function loadSave(){ try { const s = localStorage.getItem(SAVE_KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
 function save(){ if (!started) return; st.lastSeen = Date.now(); try { localStorage.setItem(SAVE_KEY, JSON.stringify(st)); } catch (e) {} }
@@ -473,11 +589,12 @@ const g = {x:0.58, d:0.5, dir:-1, mode:'idle', tx:0.5, td:0.5, timer:1.5, walk:0
 let foods = [], parts = [], snow = [], jellies = [];
 let flipTimer = 240, dirtTimer = 160, saveTimer = 5, hudTimer = 0, calmAcc = 0, calmT = 0, calmDim = 0, ambT = 0, warmT = 0;
 let scrub = null, sponge = null, T = 0;
+let guest = null, guestTimer = 45, digMarks = [], drag = null, selDecor = null;
 
 /* ---------- 画面サイズと背景 ---------- */
 let W = 0, H = 0, DPR = 1, K = 1, horizonY = 0, groundY = 0, DR = 0;
-let bgC = null, decorC = null, vigC = null, caveHole = null;
-const DPOS = {}, DANCH = {};
+let bgC = null, vigC = null, caveHole = null, yTop = 0, yBot = 0;
+const DANCH = {}, sprites = {};
 function mkCanvas(){ const c = document.createElement('canvas'); c.width = Math.round(W * DPR); c.height = Math.round(H * DPR); const x = c.getContext('2d'); x.scale(DPR, DPR); return [c, x]; }
 
 function resize(){
@@ -487,13 +604,8 @@ function resize(){
   cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
   K = clamp(Math.min(W / 390, H / 780), 0.7, 1.5);
   horizonY = H * 0.55; groundY = Math.min(H * 0.7, H - 180); DR = H * 0.06;
-  const art = !!IMG.bg_sea;
-  DPOS.chimney   = {x:W * 0.12, y:horizonY + H * 0.03,  s:W * (art ? 0.12 : 0.15)};
-  DPOS.ship      = {x:W * 0.75, y:horizonY + H * 0.045, s:W * (art ? 0.2 : 0.25)};
-  DPOS.whalebone = {x:W * 0.43, y:horizonY + H * 0.065, s:W * (art ? 0.15 : 0.19)};
-  DPOS.cave      = {x:W * 0.2,  y:groundY + H * 0.004,  s:W * 0.23};
-  DPOS.coral     = {x:W * 0.88, y:groundY + DR * 0.7,   s:W * 0.12};
-  DPOS.lantern   = {x:W * 0.66, y:groundY + DR * 0.1,   s:W * 0.032};
+  yTop = horizonY + H * 0.02; yBot = groundY + DR;
+  for (const k in sprites) delete sprites[k];
   buildBG(); buildDecor(); buildVig(); seedAmbient();
 }
 
@@ -597,11 +709,49 @@ function shellHalf(part){
   x.fillStyle = gr; x.fillRect(0, 0, c.width, c.height);
   return fadeCache[k] = c;
 }
+function decorPos(id){
+  const L = (st.layout && st.layout[id]) || DEF_LAYOUT[id];
+  return {x:L.x * W, y:lerp(yTop, yBot, L.v), s:DBASE[id] * W * depthScale(L.v), v:L.v};
+}
+// 飾りを1つずつ小さなキャンバスに描いておき、毎フレームはそれを貼るだけにする
+function decorSprite(id, s){
+  const im = IMG['decor_' + id], key = (im ? im.src : 'p') + '|' + Math.round(s * 2) + '|' + DPR;
+  const old = sprites[id]; if (old && old.key === key) return old;
+  let w, h, ox, oy;
+  if (im) { w = s * DIMG_W[id]; h = w * im.height / im.width; const fb = DFADE[id] ? DFADE[id][0] : 0; ox = w / 2; oy = h * (1 - fb * 0.45); }
+  else { w = s * 3.6; h = s * 3.6; ox = w / 2; oy = s * 3.2; }
+  const c2 = document.createElement('canvas'); c2.width = Math.max(1, Math.ceil(w * DPR)); c2.height = Math.max(1, Math.ceil(h * DPR));
+  const x2 = c2.getContext('2d'); x2.scale(DPR, DPR);
+  const keep = [caveHole, DANCH.lantern, DANCH.chimney, DANCH.ship];
+  caveHole = null; DANCH.lantern = DANCH.chimney = DANCH.ship = null;
+  drawDecor(x2, id, ox, oy, s, true);
+  const a = {cave:caveHole, lantern:DANCH.lantern, chimney:DANCH.chimney, ship:DANCH.ship};
+  [caveHole, DANCH.lantern, DANCH.chimney, DANCH.ship] = keep;
+  return sprites[id] = {key, c:c2, w, h, ox, oy, a};
+}
 function buildDecor(){
   if (!W) return;
-  let c; [decorC, c] = mkCanvas();
   caveHole = null; DANCH.ship = null; DANCH.chimney = null; DANCH.lantern = null;
-  DECOR_ORDER.forEach(id => { if (st.placed.includes(id)) drawDecor(c, id, DPOS[id].x, DPOS[id].y, DPOS[id].s, true); });
+  st.placed.forEach(id => {
+    const pos = decorPos(id), sp = decorSprite(id, pos.s), dx = pos.x - sp.ox, dy = pos.y - sp.oy, a = sp.a;
+    if (a.cave) caveHole = {x:a.cave.x + dx, y:a.cave.y + dy, rx:a.cave.rx, ry:a.cave.ry};
+    if (a.lantern) DANCH.lantern = Object.assign({}, a.lantern, {x:a.lantern.x + dx, y:a.lantern.y + dy});
+    if (a.chimney) DANCH.chimney = a.chimney.map(t => Object.assign({}, t, {x:t.x + dx, y:t.y + dy}));
+    if (a.ship) DANCH.ship = a.ship.map(t => Object.assign({}, t, {x:t.x + dx, y:t.y + dy}));
+  });
+}
+function drawDecorEnt(c, id, pos){
+  const sp = decorSprite(id, pos.s);
+  c.drawImage(sp.c, pos.x - sp.ox, pos.y - sp.oy, sp.w, sp.h);
+  if (id === 'lantern' && DANCH.lantern) { const L = DANCH.lantern; lanternGlow(c, L.x, L.y, L.r, 0.85 + Math.sin(T * 7) * 0.06 + Math.sin(T * 13) * 0.05, L.img); }
+  if (id === 'chimney' && DANCH.chimney) DANCH.chimney.forEach((t, i) => chimneyGlow(c, t, (t.img ? 0.45 : 0.75) + 0.2 * Math.sin(T * 2 + i * 2)));
+  if (id === 'ship' && DANCH.ship) DANCH.ship.forEach((p, i) => warmDot(c, p.x, p.y, p.r, 0.75 + 0.25 * Math.sin(T * 1.3 + i)));
+  if (mode === 'layout') {
+    const on = selDecor === id, rx = sp.w * 0.42, ry = Math.max(6, rx * 0.16);
+    c.save(); c.setLineDash([6, 5]); c.lineDashOffset = -T * 20;
+    c.strokeStyle = on ? 'rgba(143,227,255,.95)' : 'rgba(143,227,255,.6)'; c.lineWidth = on ? 3 : 2;
+    c.beginPath(); c.ellipse(pos.x, pos.y - ry * 0.3, rx, ry, 0, 0, 7); c.stroke(); c.restore();
+  }
 }
 function drawDecor(c, id, x, y, s, world){
   const im = IMG['decor_' + id];
@@ -839,6 +989,7 @@ function drawParticles(c){
     else if (p.type === 'bubble') { c.strokeStyle = 'rgba(200,240,255,.55)'; c.lineWidth = 1; c.beginPath(); c.arc(p.x, p.y, p.size, 0, 7); c.stroke(); c.fillStyle = 'rgba(255,255,255,.5)'; c.beginPath(); c.arc(p.x - p.size * 0.35, p.y - p.size * 0.35, p.size * 0.25, 0, 7); c.fill(); }
     else if (p.type === 'warm') { c.fillStyle = 'rgba(255,190,120,.7)'; c.beginPath(); c.arc(p.x, p.y, p.size, 0, 7); c.fill(); }
     else if (p.type === 'puff') { c.fillStyle = 'rgba(160,190,230,.25)'; c.beginPath(); c.arc(p.x, p.y, p.size * (1 + k), 0, 7); c.fill(); }
+    else if (p.type === 'treasure') { drawTreasure(c, p.id, p.x, p.y + p.size * 0.5, p.size); }
     else if (p.type === 'text') { c.font = `700 ${Math.round(15 * K + 2)}px "Zen Maru Gothic", sans-serif`; c.textAlign = 'center'; c.lineWidth = 4; c.strokeStyle = 'rgba(4,16,36,.85)'; c.strokeText(p.text, p.x, p.y); c.fillStyle = p.col; c.fillText(p.text, p.x, p.y); }
   });
   c.globalAlpha = 1;
@@ -1120,6 +1271,12 @@ function drawG(c){
 }
 function drawSponge(c){
   if (!sponge) return;
+  if (mode === 'dig') {
+    c.save(); c.translate(sponge.x, sponge.y - 16 * K); c.rotate(-0.6 + Math.sin(T * 14) * (scrub ? 0.18 : 0));
+    c.strokeStyle = '#8a6a44'; c.lineWidth = 4 * K; c.lineCap = 'round'; c.beginPath(); c.moveTo(0, -26 * K); c.lineTo(0, 0); c.stroke();
+    c.fillStyle = '#cfd8e4'; c.beginPath(); c.moveTo(-8 * K, 0); c.lineTo(8 * K, 0); c.quadraticCurveTo(8 * K, 14 * K, 0, 18 * K); c.quadraticCurveTo(-8 * K, 14 * K, -8 * K, 0); c.fill();
+    c.restore(); return;
+  }
   c.save(); c.translate(sponge.x, sponge.y - 18 * K); c.rotate(-0.2 + Math.sin(T * 12) * (scrub ? 0.12 : 0));
   rr(c, -20 * K, -12 * K, 40 * K, 24 * K, 7 * K); c.fillStyle = '#f7d36b'; c.fill();
   c.fillStyle = '#7fc89a'; rr(c, -20 * K, 4 * K, 40 * K, 8 * K, 4 * K); c.fill();
@@ -1128,7 +1285,8 @@ function drawSponge(c){
 }
 
 /* ---------- ふるまい ---------- */
-const hungry = () => !st.lastFed || Date.now() - st.lastFed > FULL_MS;
+const fullMs = () => FULL_MS * (P('full') || 1);
+const hungry = () => !st.lastFed || Date.now() - st.lastFed > fullMs();
 function say(t, dur = 2.2){ g.bubble = {text:t, t:dur, max:dur}; }
 function headPos(){ const L = gL() * dScale(g.d); return {x:gx() + g.dir * L * 0.35, y:gy() - L * 0.42}; }
 function nearestFood(){ let best = null, bd = 9; foods.forEach(f => { if (f.landed && !f.taken) { const d = Math.abs(f.x - g.x); if (d < bd) { bd = d; best = f; } } }); return best; }
@@ -1150,16 +1308,21 @@ function updateG(dt){
     const f = nearestFood();
     if (f) { const s = Math.sign(f.x - g.x) || 1; tx = f.x - s * L * 0.42 / W; td = f.d; onArrive = () => startEat(f); }
   }
+  if (tx === undefined && !hiding && mode === 'dig') {
+    const sp = nearestSpot();
+    if (sp) { const s = Math.sign(sp.x - g.x) || 1; tx = clamp(sp.x - s * L * 0.33 / W, 0.06, 0.94); td = sp.d;
+      onArrive = () => { g.dir = Math.sign(sp.x - g.x) || g.dir; g.pauseT = 2.4; say('くんくん', 1.5); }; }
+  }
   if (tx === undefined) {
     g.timer -= dt;
     if (g.timer <= 0) {
-      if (g.mode === 'walk') { g.mode = 'idle'; g.timer = rnd(2.5, 6); }
+      if (g.mode === 'walk') { g.mode = 'idle'; g.timer = rnd(2.5, 6) * (P('idle') || 1); if (Math.random() < 0.2 && mode !== 'calm') say(pick(P('lines')), 2); }
       else { g.mode = 'walk'; g.tx = rnd(0.14, 0.86); g.td = rnd(0.05, 1); g.timer = rnd(6, 12) * (mode === 'calm' ? 1.5 : 1); }
     }
     if (g.mode !== 'walk') { g.moving = Math.max(0, g.moving - dt * 3); return; }
     tx = g.tx; td = g.td;
   }
-  const spd = (13 + st.stage * 2.5) * K * (mode === 'calm' ? 0.7 : 1);
+  const spd = (13 + st.stage * 2.5) * K * (mode === 'calm' ? 0.7 : 1) * (P('speed') || 1);
   const dx = (tx - g.x) * W, dd = (td - g.d) * DR, dist = Math.hypot(dx, dd);
   if (dist > 2) {
     const step = Math.min(dist, spd * dt);
@@ -1180,7 +1343,7 @@ function finishEat(){
   foods = foods.filter(x => x !== f); g.food = null;
   st.lastFed = Date.now(); st.aff = Math.min(100, st.aff + 3); st.coins += 3;
   const h = headPos(); floatText(`+${F.exp} EXP`, h.x, h.y - 20 * K); hearts(2, h.x, h.y);
-  g.mode = 'idle'; g.timer = rnd(2, 4); say('ごちそうさま');
+  g.mode = 'idle'; g.timer = rnd(2, 4); say(P('eat') || 'ごちそうさま');
   addExp(F.exp); hud();
 }
 function updateFoods(dt){
@@ -1201,7 +1364,7 @@ function updateFoods(dt){
 }
 function notHungry(f){
   g.dir = Math.sign(f.x - g.x) || g.dir; g.pauseT = 1.6; say('……', 1.8);
-  const left = Math.max(1, Math.ceil((FULL_MS - (Date.now() - st.lastFed)) / MIN));
+  const left = Math.max(1, Math.ceil((fullMs() - (Date.now() - st.lastFed)) / MIN));
   if (!st.seenFullTip) { st.seenFullTip = true; toast(`${st.name}は おなかいっぱい。グソクムシは 何日も食べなくても 平気なんだ`); }
   else toast(`いまは いらないみたい（あと${left}分くらい）`);
 }
@@ -1223,13 +1386,13 @@ function pet(){
   g.petTimes = g.petTimes.filter(t => now - t < 10); g.petTimes.push(now);
   hearts(3, h.x, h.y);
   if (g.petTimes.length > 6) {
-    st.stress = Math.min(100, st.stress + 24);
+    st.stress = Math.min(100, st.stress + 24 * (P('stress') || 1));
     if (st.stress >= 70) { goHide(); g.petTimes = []; return; }
     say(pick(['もういいよ…', 'むむ…']), 1.6); g.pauseT = 1.2; return;
   }
   say(pick(['♪', 'ふふ', 'もそもそ', '…！', 'すりすり']), 1.4);
   g.pauseT = 1.2;
-  if (g.expCd <= 0) { addExp(3); st.aff = Math.min(100, st.aff + 1); g.expCd = 1.5; hud(); }
+  if (g.expCd <= 0) { addExp(3); st.aff = Math.min(100, st.aff + (P('aff') || 1)); g.expCd = 1.5; hud(); }
 }
 function goHide(){
   if (st.placed.includes('cave') && caveHole) {
@@ -1291,12 +1454,13 @@ function updateMolt(){
     g.mode = 'idle'; g.timer = 2; st.coins += 50;
     const h = headPos(); sparkle(gx(), gy() - gL() * 0.3, 24, '#f3ecff');
     toast(`前半分も ぬいで「${STAGE_NAME[st.stage]}」になった！（コイン +50）`);
+    addDiary(`脱皮して「${STAGE_NAME[st.stage]}」に なった`);
     say('ぴかぴか！', 2.5); hud(); checkStage(); checkUnlocks();
   }
 }
 function checkUnlocks(){
   if (!started) return;
-  VARIANTS.forEach(v => { if (!st.unlocked.includes(v.id) && v.test(st)) { st.unlocked.push(v.id); toast(`ずかんに「${v.name}」が とうろくされた！`); } });
+  VARIANTS.forEach(v => { if (!st.unlocked.includes(v.id) && v.test(st)) { st.unlocked.push(v.id); toast(`ずかんに「${v.name}」が とうろくされた！`); addDiary(`「${v.name}」の すがたが ずかんに のった`); } });
 }
 function fastDays(){ return Math.floor((Date.now() - (st.lastFed ?? st.created)) / DAY); }
 
@@ -1308,8 +1472,9 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 function update(dt){
-  updateG(dt); updateFoods(dt);
-  parts.forEach(p => { p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; if (p.type === 'bubble') p.x += Math.sin(p.age * 4 + p.size) * 0.3; if (p.type === 'heart' || p.type === 'spark') p.vy += 8 * K * dt; });
+  updateG(dt); updateFoods(dt); updateGuest(dt);
+  digMarks.forEach(m => m.a -= dt * 0.12); digMarks = digMarks.filter(m => m.a > 0);
+  parts.forEach(p => { p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; if (p.type === 'bubble') p.x += Math.sin(p.age * 4 + p.size) * 0.3; if (p.type === 'heart' || p.type === 'spark') p.vy += 8 * K * dt; if (p.type === 'treasure') p.vy *= 0.96; });
   parts = parts.filter(p => p.age < p.life);
   snow.forEach(s => { s.y += s.v * dt; s.x += Math.sin(T * 0.6 + s.ph) * 0.15; if (s.y > H) { s.y = -4; s.x = Math.random() * W; } });
   jellies.forEach(j => { j.ph += dt * 1.7; const ct = Math.max(0, Math.sin(j.ph)); j.y += (-ct * 16 + 4) * K * dt; j.x += j.vx * K * dt; if (j.y < -60) { j.y = H * 0.48; j.x = Math.random() * W; } if (j.x < -40) j.x = W + 30; if (j.x > W + 40) j.x = -30; });
@@ -1331,10 +1496,10 @@ function update(dt){
   dirtTimer -= dt; if (dirtTimer <= 0) { dirtTimer = rnd(120, 220); if (st.dirt.length < 8) st.dirt.push(mkDirt()); }
   if (mode === 'calm') {
     calmT += dt; calmAcc += dt;
-    if (calmAcc >= 8) { calmAcc = 0; addExp(1); if (Math.random() < 0.25) st.aff = Math.min(100, st.aff + 1); if (Math.random() < 0.4) say(pick(['zzz…', '…', 'すぴー']), 2); }
+    if (calmAcc >= 8) { calmAcc = 0; addExp(P('calm') || 1); if (Math.random() < 0.25) st.aff = Math.min(100, st.aff + 1); if (Math.random() < 0.4) say(pick(['zzz…', '…', 'すぴー']), 2); }
     $('#calmTime').textContent = `${Math.floor(calmT / 60)}:${String(Math.floor(calmT % 60)).padStart(2, '0')}`;
   }
-  hudTimer -= dt; if (hudTimer <= 0) { hudTimer = 1; st.maxFast = Math.max(st.maxFast, fastDays()); checkUnlocks(); hud(); }
+  hudTimer -= dt; if (hudTimer <= 0) { hudTimer = 1; st.maxFast = Math.max(st.maxFast, fastDays()); checkUnlocks(); checkPersonaReveal(); hud(); }
   saveTimer -= dt; if (saveTimer <= 0) { saveTimer = 5; save(); }
 }
 function render(){
@@ -1342,14 +1507,18 @@ function render(){
   c.drawImage(bgC, 0, 0, W, H);
   drawRays(c);
   jellies.forEach(j => drawJelly(c, j));
-  c.drawImage(decorC, 0, 0, W, H);
-  drawDecorDyn(c);
-  const ents = [];
-  st.dirt.forEach(d => ents.push([d.d, () => drawDirt(c, d)]));
-  st.shells.forEach(s => ents.push([s.d - 0.001, () => drawShell(c, s)]));
-  foods.forEach(f => ents.push([f.landed ? f.d : 2, () => drawFood(c, f)]));
-  ents.push([g.d, () => drawG(c)]);
+  if (guest && guest.def.move === 'far') drawGuest(c, guest);
+  const ents = [], fy = d => groundY + d * DR;
+  st.placed.forEach(id => { const pos = decorPos(id); ents.push([pos.y, () => drawDecorEnt(c, id, pos)]); });
+  st.dirt.forEach(d => ents.push([fy(d.d), () => drawDirt(c, d)]));
+  st.shells.forEach(s => ents.push([fy(s.d) - 0.01, () => drawShell(c, s)]));
+  foods.forEach(f => ents.push([f.landed ? fy(f.d) : 1e6, () => drawFood(c, f)]));
+  if (mode === 'dig' || digMarks.length) drawDigEnts(c, ents);
+  if (guest && guest.def.move === 'floor') ents.push([guest.y, () => drawGuest(c, guest)]);
+  const hidingNow = g.hideT > 0 && caveHole && Math.abs(gx() - caveHole.x) < gL() * 0.4;
+  ents.push([hidingNow ? caveHole.y + 0.5 : gy(), () => drawG(c)]);
   ents.sort((a, b) => a[0] - b[0]).forEach(e => e[1]());
+  if (guest && guest.def.move === 'swim') drawGuest(c, guest);
   drawParticles(c);
   c.fillStyle = 'rgba(220,235,255,.45)';
   snow.forEach(s => { c.beginPath(); c.arc(s.x, s.y, s.r, 0, 7); c.fill(); });
@@ -1357,6 +1526,342 @@ function render(){
   if (calmDim > 0.01) { c.fillStyle = `rgba(0,6,18,${calmDim * 0.38})`; c.fillRect(0, 0, W, H); }
   drawSponge(c);
   drawBubble(c);
+}
+
+/* ---------- お客さんの生きもの ---------- */
+function eligibleGuests(){ return GUESTS.filter(x => !x.need || x.need(st)); }
+function weightedPick(list, wf){ const tot = list.reduce((a, x) => a + wf(x), 0); let r0 = Math.random() * tot; for (const x of list) { r0 -= wf(x); if (r0 <= 0) return x; } return list[list.length - 1]; }
+function spawnGuest(){
+  const list = eligibleGuests(); if (!list.length) return;
+  const def = weightedPick(list, x => x.w * (st.guests[x.id] ? 1 : 2));
+  const dir = Math.random() < 0.5 ? 1 : -1;
+  let S = def.size * W, y, d = 0, speed = W / 24, x = dir > 0 ? -S * 0.6 : W + S * 0.6;
+  if (def.move === 'swim') y = rnd(H * 0.3, horizonY - H * 0.03);
+  else if (def.move === 'far') { y = rnd(H * 0.3, H * 0.42); speed = W / 45; }
+  else { d = rnd(0.2, 0.95); y = groundY + d * DR; S *= dScale(d); speed = W / 26; }
+  if (def.id === 'koshiori' && st.placed.includes('chimney')) {
+    const cp = decorPos('chimney'); y = cp.y + 2; S = def.size * W * depthScale(cp.v) * 1.3; x = cp.x; speed = W / 40;
+  }
+  if (def.id === 'ryugu') speed = W / 30;
+  guest = {def, S, x, y, d, dir, vx:dir * speed, t:0, ph:rnd(0, 6), reacted:false, caught:false};
+}
+function guestPos(gs){
+  const k = gs.def.move === 'swim' ? Math.sin(gs.t * 1.4 + gs.ph) * gs.S * 0.04 : 0;
+  return {x:gs.x, y:gs.y + k};
+}
+function updateGuest(dt){
+  if (!guest) {
+    if (mode === 'layout' || !started) return;
+    guestTimer -= dt; if (guestTimer <= 0) { guestTimer = rnd(90, 200); spawnGuest(); }
+    return;
+  }
+  const gs = guest; gs.t += dt; gs.x += gs.vx * dt;
+  if (!gs.reacted && gs.x > -gs.S * 0.2 && gs.x < W + gs.S * 0.2) { gs.reacted = true; reactToGuest(gs); }
+  if ((gs.vx > 0 && gs.x > W + gs.S * 0.7) || (gs.vx < 0 && gs.x < -gs.S * 0.7)) guest = null;
+}
+function reactToGuest(gs){
+  if (g.mode === 'molt' || g.mode === 'flip' || g.mode === 'eat') return;
+  if (P('shy') && caveHole && st.placed.includes('cave')) { g.hideT = 14; g.mode = 'walk'; g.pauseT = 0; say('こわい…', 1.8); return; }
+  if (P('brave')) { say('…', 1.4); return; }
+  g.dir = Math.sign(gs.x - gx()) || g.dir; g.pauseT = 1.4; say('！', 1.4);
+  if (!st.guests[gs.def.id]) toast(`だれか 来た！ タップして ずかんに 登録しよう`);
+}
+function hitGuest(p){
+  if (!guest) return false;
+  const gs = guest, q = guestPos(gs), floor = gs.def.move === 'floor';
+  const cy = floor ? q.y - gs.S * Math.max(0.12, gs.def.hr * 0.6) : q.y;
+  const rx = gs.S * 0.5, ry = Math.max(24 * K, gs.S * gs.def.hr);
+  return ((p.x - q.x) / rx) ** 2 + ((p.y - cy) / ry) ** 2 < 1;
+}
+function registerGuest(gs, viaPhoto){
+  if (!gs || gs.caught) return; gs.caught = true;
+  const def = gs.def, rec = st.guests[def.id], q = guestPos(gs);
+  sparkle(q.x, q.y - (def.move === 'floor' ? gs.S * 0.15 : 0), 14, '#d8f6ff');
+  if (!rec) {
+    st.guests[def.id] = {n:1, first:Date.now()}; st.coins += 30;
+    toast(`${viaPhoto ? 'しゃしんに うつった！ ' : ''}はじめて「${def.name}」に 会えた！ ずかんに 登録（コイン +30）`);
+    addDiary(`${def.name}が 遊びに来た。はじめて 会えた！`);
+  } else {
+    rec.n++; st.coins += 5; floatText('+5', q.x, q.y - 20 * K, '#ffe08a');
+    if (!viaPhoto) toast(`「${def.name}」に また 会えた`);
+  }
+  hud(); save();
+}
+function guestOnScreen(){ return guest && guest.x > 0 && guest.x < W; }
+function drawGuest(c, gs){
+  const q = guestPos(gs), def = gs.def, im = IMG['guest_' + def.id];
+  c.save(); c.translate(q.x, q.y); c.scale(gs.dir, 1);
+  if (def.move === 'far') c.globalAlpha = 0.34;
+  if (def.move === 'swim') c.rotate(Math.sin(gs.t * 1.4 + gs.ph) * 0.05);
+  drawGuestArt(c, def.id, gs.S, gs.t, im, def.move === 'far');
+  c.restore();
+}
+// (0,0)：泳ぐ生きものは体の中心、歩く生きものは足もと。右向きで描く
+function drawGuestArt(c, id, S, t, im, shadow){
+  const floor = GMAP[id].move === 'floor';
+  if (id === 'daiou' && !im) {
+    const L = S / 1.45, o = {x:0, y:0, L, dir:1, t, walk:t * 5, moving:1, pal:PAL.amber, vid:'daiou'};
+    if (IMG.gusoku_5) drawGusokuImg(c, o, tinted(IMG.gusoku_5, 'daiou')); else drawGusoku(c, o);
+    return;
+  }
+  if (im) {
+    const w = S, h = w * im.height / im.width, src = shadow ? tinted(im, 'shadow') : im;
+    const bob = floor ? -Math.abs(Math.sin(t * 5)) * h * 0.02 : 0;
+    c.drawImage(src, -w / 2, floor ? -h + bob : -h / 2, w, h);
+    return;
+  }
+  if (shadow) { c.fillStyle = '#0d2142'; c.strokeStyle = '#0d2142'; }
+  GUEST_ART[id](c, S, t, shadow);
+}
+const GUEST_ART = {
+  mendako(c, S, t){
+    const w = S * 0.45, h = S * 0.36, fl = Math.sin(t * 3) * 0.2;
+    c.fillStyle = '#ee8a63';
+    [-1, 1].forEach(k => { c.save(); c.translate(k * w * 0.42, -h * 0.72); c.rotate(k * (0.55 + fl)); c.beginPath(); c.ellipse(0, 0, w * 0.2, h * 0.24, 0, 0, 7); c.fill(); c.restore(); });
+    const gr = c.createRadialGradient(-w * 0.25, -h * 0.75, 0, 0, -h * 0.3, w * 1.1);
+    gr.addColorStop(0, '#ffd2b6'); gr.addColorStop(0.55, '#f08a5d'); gr.addColorStop(1, '#b84a2c');
+    c.fillStyle = gr; c.beginPath(); c.moveTo(-w, 0); c.bezierCurveTo(-w, -h * 1.35, w, -h * 1.35, w, 0);
+    for (let i = 0; i < 6; i++) { const x0 = w - i * w / 3, x1 = x0 - w / 3; c.quadraticCurveTo((x0 + x1) / 2, h * (0.38 + 0.08 * Math.sin(t * 3 + i)), x1, 0); }
+    c.closePath(); c.fill();
+    c.fillStyle = '#2a120c'; [-0.32, 0.32].forEach(k => { c.beginPath(); c.arc(w * k, -h * 0.42, w * 0.075, 0, 7); c.fill(); });
+    c.fillStyle = '#fff'; [-0.3, 0.34].forEach(k => { c.beginPath(); c.arc(w * k, -h * 0.46, w * 0.025, 0, 7); c.fill(); });
+  },
+  anko(c, S, t){
+    const r = S * 0.3;
+    c.fillStyle = '#3a2a20'; c.beginPath(); c.moveTo(-r * 0.9, 0); c.lineTo(-r * 1.6, -r * 0.45); c.lineTo(-r * 1.6, r * 0.45); c.closePath(); c.fill();
+    const gr = c.createRadialGradient(-r * 0.2, -r * 0.4, 0, 0, 0, r * 1.2); gr.addColorStop(0, '#6b5240'); gr.addColorStop(1, '#1d130d');
+    c.fillStyle = gr; c.beginPath(); c.ellipse(0, 0, r * 1.1, r, 0, 0, 7); c.fill();
+    c.fillStyle = '#0b0604'; c.beginPath(); c.moveTo(r * 1.05, -r * 0.05); c.quadraticCurveTo(r * 0.55, r * 0.55, r * 0.15, r * 0.25); c.quadraticCurveTo(r * 0.6, r * 0.1, r * 1.05, -r * 0.05); c.fill();
+    c.fillStyle = '#efe6d4'; for (let i = 0; i < 5; i++) { const x0 = r * (0.35 + i * 0.14); c.beginPath(); c.moveTo(x0, r * 0.12); c.lineTo(x0 + r * 0.05, r * 0.28); c.lineTo(x0 + r * 0.1, r * 0.1); c.fill(); }
+    c.fillStyle = '#cfe9ff'; c.beginPath(); c.arc(r * 0.45, -r * 0.35, r * 0.09, 0, 7); c.fill();
+    c.strokeStyle = '#4b3a2c'; c.lineWidth = Math.max(1, r * 0.06); c.lineCap = 'round';
+    const lx = r * 1.3 + Math.sin(t * 2) * r * 0.08, ly = -r * 1.35;
+    c.beginPath(); c.moveTo(r * 0.2, -r * 0.92); c.quadraticCurveTo(r * 0.9, -r * 1.7, lx, ly); c.stroke();
+    const f = 0.75 + 0.25 * Math.sin(t * 4);
+    const lg = c.createRadialGradient(lx, ly, 0, lx, ly, r * 0.9); lg.addColorStop(0, `rgba(190,250,255,${0.85 * f})`); lg.addColorStop(1, 'rgba(120,220,255,0)');
+    c.fillStyle = lg; c.beginPath(); c.arc(lx, ly, r * 0.9, 0, 7); c.fill();
+    c.fillStyle = '#f2ffff'; c.beginPath(); c.arc(lx, ly, r * 0.13, 0, 7); c.fill();
+  },
+  nuta(c, S, t){
+    const n = 22, pts = [];
+    for (let i = 0; i <= n; i++) { const u = i / n; pts.push([lerp(S * 0.5, -S * 0.5, u), -S * 0.035 + Math.sin(u * 7 - t * 5) * S * 0.025 * u]); }
+    const line = () => { c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); };
+    c.lineCap = 'round'; c.lineJoin = 'round';
+    line(); c.strokeStyle = '#6e4a52'; c.lineWidth = S * 0.075; c.stroke();
+    line(); c.strokeStyle = '#d3a8ae'; c.lineWidth = S * 0.055; c.stroke();
+    line(); c.strokeStyle = 'rgba(255,255,255,.25)'; c.lineWidth = S * 0.012; c.stroke();
+    c.strokeStyle = '#d3a8ae'; c.lineWidth = Math.max(1, S * 0.008);
+    [-1, 0, 1].forEach(k => { c.beginPath(); c.moveTo(S * 0.5, -S * 0.035); c.lineTo(S * 0.54, -S * 0.035 + k * S * 0.02); c.stroke(); });
+  },
+  takaashi(c, S, t){
+    const by = -S * 0.3, bw = S * 0.13, bh = S * 0.09, w5 = t * 4;
+    c.lineCap = 'round'; c.lineJoin = 'round';
+    for (let i = 0; i < 8; i++) {
+      const side = i < 4 ? -1 : 1, k = i % 4, hx = side * bw * (0.3 + k * 0.18), ph = w5 + i * 1.3;
+      const fx = side * S * (0.16 + k * 0.1) + Math.sin(ph) * S * 0.03, fy = -Math.max(0, Math.cos(ph)) * S * 0.03;
+      const kx = (hx + fx) / 2 + side * S * 0.04, ky = by - S * (0.16 + k * 0.03);
+      c.strokeStyle = '#a8492a'; c.lineWidth = S * 0.02; c.beginPath(); c.moveTo(hx, by); c.lineTo(kx, ky); c.lineTo(fx, fy); c.stroke();
+      c.strokeStyle = '#f19a6c'; c.lineWidth = S * 0.012; c.stroke();
+    }
+    c.strokeStyle = '#a8492a'; c.lineWidth = S * 0.022; c.beginPath(); c.moveTo(bw * 0.8, by); c.quadraticCurveTo(S * 0.25, by - S * 0.08, S * 0.3, by + S * 0.1); c.stroke();
+    const gr = c.createLinearGradient(0, by - bh, 0, by + bh); gr.addColorStop(0, '#f6a676'); gr.addColorStop(1, '#b8532f');
+    c.fillStyle = gr; c.beginPath(); c.ellipse(0, by, bw, bh, 0, 0, 7); c.fill();
+    c.fillStyle = 'rgba(255,240,220,.6)'; for (let i = 0; i < 6; i++) { c.beginPath(); c.arc(-bw * 0.5 + i * bw * 0.2, by - bh * 0.4 + (i % 2) * bh * 0.3, S * 0.008, 0, 7); c.fill(); }
+    c.fillStyle = '#1a0d08'; c.beginPath(); c.arc(bw * 0.85, by - bh * 0.7, S * 0.012, 0, 7); c.fill();
+  },
+  koshiori(c, S, t){
+    const by = -S * 0.2;
+    c.fillStyle = '#eef2f6'; c.strokeStyle = '#b9c4d0'; c.lineWidth = Math.max(1, S * 0.02);
+    c.beginPath(); c.ellipse(0, by, S * 0.28, S * 0.15, 0, 0, 7); c.fill(); c.stroke();
+    c.beginPath(); c.ellipse(-S * 0.25, by + S * 0.05, S * 0.12, S * 0.09, 0, 0, 7); c.fill();
+    c.lineCap = 'round';
+    for (let i = 0; i < 3; i++) { const lx = -S * 0.1 + i * S * 0.12; c.beginPath(); c.moveTo(lx, by + S * 0.08); c.lineTo(lx + S * 0.05, 0); c.stroke(); }
+    const sw = Math.sin(t * 3) * S * 0.02;
+    c.lineWidth = S * 0.07; c.strokeStyle = '#f4f6f9'; c.beginPath(); c.moveTo(S * 0.18, by); c.lineTo(S * 0.62, by - S * 0.08 + sw); c.stroke();
+    c.lineWidth = Math.max(1, S * 0.012); c.strokeStyle = 'rgba(210,220,230,.9)';
+    for (let i = 0; i < 9; i++) { const x0 = S * (0.22 + i * 0.045), y0 = by - S * 0.01 - i * S * 0.008 + sw * i / 9; c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0 - S * 0.02, y0 + S * 0.07); c.stroke(); }
+    c.fillStyle = '#1a2a3a'; c.beginPath(); c.arc(S * 0.24, by - S * 0.1, S * 0.03, 0, 7); c.fill();
+  },
+  mitsukuri(c, S, t){
+    const L = S;
+    c.save(); c.rotate(Math.sin(t * 2) * 0.02);
+    c.fillStyle = '#e7a6ae';
+    c.beginPath(); c.moveTo(L * 0.5, -L * 0.035);
+    c.quadraticCurveTo(L * 0.32, -L * 0.07, L * 0.16, -L * 0.075);
+    c.quadraticCurveTo(-L * 0.1, -L * 0.1, -L * 0.3, -L * 0.04);
+    c.lineTo(-L * 0.5, -L * 0.15 + Math.sin(t * 4) * L * 0.01); c.lineTo(-L * 0.42, 0); c.lineTo(-L * 0.47, L * 0.05); c.lineTo(-L * 0.3, L * 0.025);
+    c.quadraticCurveTo(0, L * 0.08, L * 0.2, L * 0.04); c.quadraticCurveTo(L * 0.34, L * 0.01, L * 0.5, -L * 0.035); c.fill();
+    c.fillStyle = '#d58b95';
+    c.beginPath(); c.moveTo(-L * 0.02, -L * 0.09); c.lineTo(-L * 0.1, -L * 0.15); c.lineTo(-L * 0.12, -L * 0.08); c.fill();
+    c.beginPath(); c.moveTo(L * 0.1, L * 0.05); c.lineTo(L * 0.02, L * 0.12); c.lineTo(-L * 0.02, L * 0.06); c.fill();
+    c.strokeStyle = '#8f4c56'; c.lineWidth = Math.max(1, L * 0.005); c.beginPath(); c.moveTo(L * 0.3, L * 0.0); c.quadraticCurveTo(L * 0.22, L * 0.035, L * 0.12, L * 0.03); c.stroke();
+    c.fillStyle = '#20171a'; c.beginPath(); c.arc(L * 0.22, -L * 0.035, L * 0.01, 0, 7); c.fill();
+    c.restore();
+  },
+  ryugu(c, S, t){
+    const n = 30, top = [], bot = [];
+    for (let i = 0; i <= n; i++) { const u = i / n, x = lerp(S * 0.5, -S * 0.5, u), y = Math.sin(u * 6 - t * 3) * S * 0.03 * (0.3 + u), th = S * 0.04 * (1 - u * 0.75); top.push([x, y - th]); bot.push([x, y + th * 0.8]); }
+    const gr = c.createLinearGradient(0, -S * 0.05, 0, S * 0.05); gr.addColorStop(0, '#f4f8fc'); gr.addColorStop(1, '#8fa2b8');
+    c.fillStyle = gr; c.beginPath(); top.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); for (let i = bot.length - 1; i >= 0; i--) c.lineTo(bot[i][0], bot[i][1]); c.closePath(); c.fill();
+    c.strokeStyle = '#ff4d5e'; c.lineWidth = Math.max(1.2, S * 0.008); c.lineCap = 'round';
+    c.beginPath(); top.forEach(([x, y], i) => { if (i > 2) i > 3 ? c.lineTo(x, y - S * 0.006) : c.moveTo(x, y - S * 0.006); }); c.stroke();
+    for (let i = 0; i < 5; i++) { const [x, y] = top[1]; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x - S * 0.02, y - S * (0.05 + i * 0.012), x - S * (0.05 + i * 0.025) + Math.sin(t * 3 + i) * S * 0.01, y - S * (0.04 + i * 0.015)); c.stroke(); }
+    c.fillStyle = '#1c2430'; c.beginPath(); c.arc(S * 0.47, top[0][1] + S * 0.02, S * 0.006, 0, 7); c.fill();
+  },
+  ika(c, S, t, shadow){
+    c.fillStyle = shadow ? '#0d2142' : '#8a2633'; c.strokeStyle = c.fillStyle; c.lineCap = 'round';
+    c.beginPath(); c.ellipse(S * 0.2, 0, S * 0.28, S * 0.065, 0, 0, 7); c.fill();
+    c.beginPath(); c.moveTo(S * 0.38, 0); c.lineTo(S * 0.5, -S * 0.07); c.lineTo(S * 0.5, S * 0.07); c.closePath(); c.fill();
+    c.beginPath(); c.ellipse(-S * 0.1, 0, S * 0.07, S * 0.05, 0, 0, 7); c.fill();
+    for (let i = 0; i < 8; i++) { const k = (i - 3.5) / 3.5; c.lineWidth = S * 0.012; c.beginPath(); c.moveTo(-S * 0.14, k * S * 0.03); c.quadraticCurveTo(-S * 0.3, k * S * 0.05 + Math.sin(t * 2 + i) * S * 0.02, -S * 0.45, k * S * 0.07 + Math.sin(t * 1.6 + i) * S * 0.03); c.stroke(); }
+    c.lineWidth = S * 0.007; [-1, 1].forEach(k => { c.beginPath(); c.moveTo(-S * 0.14, 0); c.quadraticCurveTo(-S * 0.4, k * S * 0.04, -S * 0.62, k * S * 0.05 + Math.sin(t * 1.3 + k) * S * 0.03); c.stroke(); });
+  },
+};
+
+/* ---------- たからさがし ---------- */
+function todayKey(){ const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; }
+function pickTreasure(){ return weightedPick(TREASURES, x => x.w * (x.id === 'goldcoin' && st.placed.includes('ship') ? 3 : 1)).id; }
+function ensureDig(){
+  if (!st.dig || st.dig.day !== todayKey()) {
+    const n = 3 + (P('treasure') || 0);
+    const spots = [];
+    for (let i = 0, tries = 0; spots.length < n && tries < 200; tries++) {
+      const x = rnd(0.12, 0.88), d = rnd(0.1, 0.95);
+      if (spots.every(o => Math.abs(o.x - x) > 0.22)) spots.push({x, d, item:pickTreasure(), prog:0, done:false});
+    }
+    st.dig = {day:todayKey(), spots};
+  }
+  return st.dig;
+}
+const digLeft = () => ensureDig().spots.filter(x => !x.done).length;
+function nearestSpot(){ let best = null, bd = 9; ensureDig().spots.forEach(x => { if (!x.done) { const d0 = Math.abs(x.x - g.x) + Math.abs(x.d - g.d) * 0.2; if (d0 < bd) { bd = d0; best = x; } } }); return best; }
+function updateDigBar(){ const n = digLeft(); $('#digText').textContent = n ? `くんくんしている ところを 指で ほろう（きょうは あと ${n}こ）` : 'きょうの たからものは ぜんぶ 見つけた'; }
+function digAt(x, y, amt){
+  const D = ensureDig(); let hit = false;
+  D.spots.forEach(sp => {
+    if (sp.done) return;
+    const sx = sp.x * W, sy = groundY + sp.d * DR;
+    if (Math.hypot(sx - x, (sy - y) * 1.5) < 0.1 * W) {
+      hit = true; sp.prog += amt;
+      if (Math.random() < 0.35) addP({type:'puff', x:sx + rnd(-10, 10) * K, y:sy, vx:rnd(-20, 20) * K, vy:rnd(-14, -4) * K, life:1, size:rnd(3, 7) * K});
+      if (sp.prog >= 170 * K) revealTreasure(sp);
+    }
+  });
+  if (!hit && Math.random() < 0.3) {
+    addP({type:'puff', x, y, vx:rnd(-16, 16) * K, vy:rnd(-10, -3) * K, life:0.9, size:rnd(3, 6) * K});
+    if (y > groundY - 10 && digMarks.length < 30) digMarks.push({x, y, a:1});
+  }
+}
+function revealTreasure(sp){
+  sp.done = true;
+  const TR = TMAP[sp.item], first = !st.treasures[sp.item];
+  st.treasures[sp.item] = (st.treasures[sp.item] || 0) + 1;
+  const coins = TR.coins + (first ? 30 : 0), sx = sp.x * W, sy = groundY + sp.d * DR;
+  st.coins += coins; st.aff = Math.min(100, st.aff + 2);
+  addP({type:'treasure', id:sp.item, x:sx, y:sy - 6 * K, vy:-26 * K, life:2.6, size:30 * K});
+  sparkle(sx, sy - 12 * K, 16, '#ffe9a8');
+  floatText(`+${coins}`, sx, sy - 52 * K, '#ffe08a');
+  toast(first ? `はじめての たからもの「${TR.name}」！ ずかんに 登録（コイン +${coins}）` : `「${TR.name}」を 見つけた（コイン +${coins}）`);
+  if (first) addDiary(`いっしょに 砂を ほって「${TR.name}」を 見つけた`);
+  g.pauseT = 1.6; g.dir = Math.sign(sx - gx()) || g.dir; say(pick(['みつけた！', 'やったー！', 'ここ ここ！']), 1.8);
+  const h = headPos(); hearts(2, h.x, h.y);
+  addExp(6); hud(); save(); updateDigBar();
+  if (!digLeft()) setTimeout(() => { toast('きょうの たからものは ぜんぶ 見つけた！ また あした'); if (mode === 'dig') setMode('normal'); }, 1800);
+}
+function drawDigEnts(c, ents){
+  digMarks.forEach(m => ents.push([m.y - 0.2, () => { c.fillStyle = `rgba(8,16,30,${0.35 * m.a})`; c.beginPath(); c.ellipse(m.x, m.y, 9 * K, 3.5 * K, 0, 0, 7); c.fill(); }]));
+  if (!st.dig) return;
+  st.dig.spots.forEach(sp => {
+    if (sp.done || sp.prog <= 0) return;
+    const sx = sp.x * W, sy = groundY + sp.d * DR, k = clamp(sp.prog / (170 * K), 0, 1), rx = (8 + k * 18) * K, ry = rx * 0.38;
+    ents.push([sy - 0.3, () => {
+      c.fillStyle = 'rgba(150,175,205,.35)'; c.beginPath(); c.ellipse(sx, sy - ry * 0.4, rx * 1.25, ry * 1.3, 0, Math.PI, 0); c.fill();
+      c.fillStyle = 'rgba(4,10,22,.75)'; c.beginPath(); c.ellipse(sx, sy, rx, ry, 0, 0, 7); c.fill();
+      if (k > 0.6) { c.fillStyle = `rgba(255,230,150,${(k - 0.6) * 1.6 * (0.6 + 0.4 * Math.sin(T * 8))})`; c.beginPath(); c.arc(sx, sy - ry * 0.2, 2.5 * K, 0, 7); c.fill(); }
+    }]);
+  });
+}
+function drawTreasure(c, id, x, y, s){
+  const im = IMG['treasure_' + id];
+  if (im) { const w = s * 1.5, h = w * im.height / im.width; c.drawImage(im, x - w / 2, y - h, w, h); return; }
+  c.save(); c.translate(x, y - s * 0.5); c.lineJoin = 'round';
+  if (id === 'coinbag') {
+    const gr = c.createRadialGradient(-s * 0.15, -s * 0.1, 0, 0, 0, s * 0.6); gr.addColorStop(0, '#c99a62'); gr.addColorStop(1, '#7a5530');
+    c.fillStyle = gr; c.beginPath(); c.ellipse(0, s * 0.1, s * 0.42, s * 0.38, 0, 0, 7); c.fill();
+    c.beginPath(); c.moveTo(-s * 0.16, -s * 0.22); c.lineTo(-s * 0.26, -s * 0.42); c.lineTo(s * 0.26, -s * 0.42); c.lineTo(s * 0.16, -s * 0.22); c.fill();
+    c.strokeStyle = '#d9b46a'; c.lineWidth = s * 0.06; c.beginPath(); c.moveTo(-s * 0.18, -s * 0.24); c.lineTo(s * 0.18, -s * 0.24); c.stroke();
+    c.fillStyle = '#f6c760'; c.beginPath(); c.ellipse(s * 0.32, s * 0.38, s * 0.16, s * 0.07, 0, 0, 7); c.fill();
+  } else if (id === 'shell') {
+    const gr = c.createLinearGradient(-s * 0.4, -s * 0.4, s * 0.4, s * 0.4); gr.addColorStop(0, '#ffe3f0'); gr.addColorStop(0.5, '#d6c8ff'); gr.addColorStop(1, '#bff0ff');
+    c.fillStyle = gr; c.beginPath(); c.moveTo(0, s * 0.42); c.lineTo(-s * 0.46, -s * 0.12); c.quadraticCurveTo(0, -s * 0.62, s * 0.46, -s * 0.12); c.closePath(); c.fill();
+    c.strokeStyle = 'rgba(150,110,170,.6)'; c.lineWidth = Math.max(1, s * 0.03);
+    for (let i = -3; i <= 3; i++) { c.beginPath(); c.moveTo(0, s * 0.4); c.lineTo(i * s * 0.13, -s * 0.3 + Math.abs(i) * s * 0.05); c.stroke(); }
+  } else if (id === 'ukidama') {
+    const gr = c.createRadialGradient(-s * 0.15, -s * 0.15, 0, 0, 0, s * 0.45); gr.addColorStop(0, 'rgba(200,255,245,.95)'); gr.addColorStop(1, 'rgba(40,150,150,.85)');
+    c.fillStyle = gr; c.beginPath(); c.arc(0, 0, s * 0.42, 0, 7); c.fill();
+    c.strokeStyle = 'rgba(120,90,60,.8)'; c.lineWidth = Math.max(1, s * 0.035);
+    for (let i = -1; i <= 1; i++) { c.beginPath(); c.ellipse(0, 0, s * 0.42 * (1 - Math.abs(i) * 0.45), s * 0.42, 0, 0, 7); c.stroke(); c.beginPath(); c.moveTo(-s * 0.42, i * s * 0.2); c.lineTo(s * 0.42, i * s * 0.2); c.stroke(); }
+    c.fillStyle = 'rgba(255,255,255,.8)'; c.beginPath(); c.arc(-s * 0.15, -s * 0.17, s * 0.07, 0, 7); c.fill();
+  } else if (id === 'tooth') {
+    const gr = c.createLinearGradient(0, -s * 0.45, 0, s * 0.4); gr.addColorStop(0, '#f6efe0'); gr.addColorStop(1, '#9c8a6c');
+    c.fillStyle = gr; c.beginPath(); c.moveTo(0, -s * 0.48); c.quadraticCurveTo(s * 0.12, 0, s * 0.36, s * 0.32); c.lineTo(-s * 0.36, s * 0.32); c.quadraticCurveTo(-s * 0.12, 0, 0, -s * 0.48); c.fill();
+    c.fillStyle = '#5b4a36'; c.fillRect(-s * 0.36, s * 0.3, s * 0.72, s * 0.12);
+  } else if (id === 'goldcoin') {
+    const gr = c.createRadialGradient(-s * 0.1, -s * 0.12, 0, 0, 0, s * 0.42); gr.addColorStop(0, '#fff0b0'); gr.addColorStop(1, '#c38a1c');
+    c.fillStyle = gr; c.beginPath(); c.arc(0, 0, s * 0.4, 0, 7); c.fill();
+    c.strokeStyle = '#a06c10'; c.lineWidth = Math.max(1, s * 0.04); c.beginPath(); c.arc(0, 0, s * 0.3, 0, 7); c.stroke();
+    c.fillStyle = '#a06c10'; c.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr0 = i % 2 ? s * 0.08 : s * 0.18; c.lineTo(Math.cos(a) * rr0, Math.sin(a) * rr0); } c.fill();
+  } else {
+    const gl = c.createRadialGradient(0, 0, 0, 0, 0, s * 0.8); gl.addColorStop(0, 'rgba(120,220,255,.5)'); gl.addColorStop(1, 'rgba(120,220,255,0)');
+    c.fillStyle = gl; c.beginPath(); c.arc(0, 0, s * 0.8, 0, 7); c.fill();
+    c.fillStyle = '#3f8fe6'; c.beginPath(); c.moveTo(0, s * 0.42); c.lineTo(-s * 0.38, -s * 0.05); c.lineTo(-s * 0.2, -s * 0.32); c.lineTo(s * 0.2, -s * 0.32); c.lineTo(s * 0.38, -s * 0.05); c.closePath(); c.fill();
+    c.fillStyle = '#9fe0ff'; c.beginPath(); c.moveTo(-s * 0.2, -s * 0.32); c.lineTo(0, -s * 0.05); c.lineTo(s * 0.2, -s * 0.32); c.closePath(); c.fill();
+    c.fillStyle = '#245fb0'; c.beginPath(); c.moveTo(0, s * 0.42); c.lineTo(0, -s * 0.05); c.lineTo(s * 0.38, -s * 0.05); c.closePath(); c.fill();
+  }
+  c.restore();
+}
+
+/* ---------- おるすばん日記 ---------- */
+function addDiary(text, t){ st.diary.push({t:t || Date.now(), text}); st.diary.sort((a, b) => a.t - b.t); if (st.diary.length > 60) st.diary.splice(0, st.diary.length - 60); updateDiaryDot(); }
+function updateDiaryDot(){ const d = $('#diaryDot'); if (d) d.hidden = !st.diary.some(e => e.t > (st.diaryRead || 0)); }
+function partOfDay(h){ return h < 5 ? 'よなか' : h < 10 ? 'あさ' : h < 16 ? 'ひる' : h < 19 ? 'ゆうがた' : 'よる'; }
+function absenceDiary(from, to){
+  const hrs = (to - from) / HOUR; if (hrs < 0.5) return 0;
+  const n = clamp(Math.round(hrs / 3), 1, 5), used = new Set(); let made = 0;
+  const pool = [
+    {k:'guest', w:5, f:() => { const list = eligibleGuests(); if (!list.length) return null; const def = pick(list);
+      if (!st.heard.includes(def.id) && !st.guests[def.id]) st.heard.push(def.id);
+      const how = def.move === 'floor' ? '近くを 歩いていった' : def.move === 'far' ? '遠くに 大きな影が 見えた' : '上の ほうを 泳いでいった';
+      const re = P('shy') ? 'こわくて、ほら穴から 出てこなかった' : P('brave') ? 'ちらっと見て、また のんびり' : 'じっと 見ていた';
+      return `${st.guests[def.id] ? def.name : 'だれか'}が ${how}。${re}`; }},
+    {k:'coin', w:3 * (P('treasure') ? 2 : 1), f:() => { const a = Math.round(rnd(8, 20)) * (P('treasure') ? 2 : 1); st.coins += a; return `砂の中から コインを 見つけた（+${a}）`; }},
+    {k:'sleep', w:P('idle') > 1 ? 4 : 2, f:() => 'ほら穴の 入口で ぐっすり ねていた'},
+    {k:'jelly', w:2, f:() => 'クラゲが すぐ上を ただよっていった。ずっと 見あげていた'},
+    {k:'snow', w:2, f:() => 'マリンスノーが 背中に うっすら つもっていた'},
+    {k:'walk', w:P('speed') > 1.2 ? 4 : 2, f:() => 'すみかを ぐるっと 一周 さんぽした'},
+    {k:'persona', w:3, f:() => P('diary')},
+  ];
+  for (let i = 0; i < n; i++) {
+    const t = from + (to - from) * (i + 0.5 + rnd(-0.3, 0.3)) / n;
+    const fd = Math.floor((t - (st.lastFed ?? st.created)) / DAY);
+    let text = null;
+    if (fd >= 1 && !used.has('fast') && Math.random() < 0.5) { used.add('fast'); text = `きょうも なにも 食べなかった。絶食 ${fd}日目`; }
+    else { const cand = pool.filter(x => !used.has(x.k)); if (!cand.length) break; const ev = weightedPick(cand, x => x.w); used.add(ev.k); text = ev.f(); }
+    if (text) { addDiary(text, t); made++; }
+  }
+  return made;
+}
+function openDiary(){
+  const groups = [];
+  st.diary.slice().reverse().forEach(e => {
+    const d = new Date(e.t), key = `${d.getMonth() + 1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）`;
+    let gp = groups.find(x => x.key === key); if (!gp) groups.push(gp = {key, items:[]});
+    gp.items.push(e);
+  });
+  const read = st.diaryRead || 0;
+  openSheet(`${st.name}の おるすばん日記`, st.diary.length ? `<div class="diary">${groups.map(gp => `<section class="dday"><h3>${gp.key}</h3><ol>${gp.items.map(e => `<li class="${e.t > read ? 'new' : ''}"><time>${partOfDay(new Date(e.t).getHours())}</time><p>${esc(e.text)}</p></li>`).join('')}</ol></section>`).join('')}</div>`
+    : `<p class="empty">まだ 日記は ありません。<br>しばらく あけてから のぞくと、るすの あいだの できごとが 書かれているよ。</p>`);
+  st.diaryRead = Date.now(); updateDiaryDot(); save();
 }
 
 /* ---------- HUD ---------- */
@@ -1398,10 +1903,13 @@ function nextToast(){
 }
 function setMode(m){
   mode = m; app.dataset.mode = m;
-  $('#actClean').classList.toggle('on', m === 'clean');
+  $('#actClean').classList.toggle('on', m === 'clean'); $('#actPlay').classList.toggle('on', m === 'dig');
   $('#hint').hidden = m !== 'clean'; $('#calmBar').hidden = m !== 'calm'; $('#photoBar').hidden = m !== 'photo';
+  $('#digBar').hidden = m !== 'dig'; $('#layoutBar').hidden = m !== 'layout';
   if (m === 'calm') { calmT = 0; calmAcc = 0; $('#calmTime').textContent = '0:00'; }
-  if (m !== 'clean') { scrub = null; sponge = null; }
+  if (m !== 'clean' && m !== 'dig') { scrub = null; sponge = null; }
+  if (m !== 'layout') { drag = null; selDecor = null; }
+  if (m === 'dig') updateDigBar();
 }
 
 /* ---------- シート ---------- */
@@ -1421,7 +1929,7 @@ function closeSheet(){
 scrim.addEventListener('click', closeSheet); $('#sheetClose').addEventListener('click', closeSheet);
 
 function openFood(){
-  const full = !hungry(), left = full ? Math.ceil((FULL_MS - (Date.now() - st.lastFed)) / MIN) : 0;
+  const full = !hungry(), left = full ? Math.ceil((fullMs() - (Date.now() - st.lastFed)) / MIN) : 0;
   openSheet('エサをあげる', `
     <p class="lead">えらんだエサが ゆっくり しずんでいくよ。おなかが すいていれば 食べにくる。</p>
     <div class="foodgrid">${FOODS.map(f => `
@@ -1441,6 +1949,16 @@ function thumbGusoku(cvEl, pal, vid, locked){
   const L = w * (has ? 0.6 : 0.62), o = {x:w * (has ? 0.5 : 0.44), y:h * 0.84, L, dir:1, t:0, walk:0, moving:0, pal, vid:locked ? 'lock' : vid, noShadow:locked, noEye:locked};
   if (locked && !has) drawGusoku(c, o); else paintGusoku(c, o, has ? st.stage : Math.max(2, st.stage));
 }
+function thumbArt(el, w, h, paint, locked){
+  const d = Math.min(2, devicePixelRatio || 1); el.width = w * d; el.height = h * d;
+  const c = el.getContext('2d'); c.scale(d, d);
+  const gr = c.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, '#0c2a50'); gr.addColorStop(1, '#06142a');
+  c.fillStyle = gr; rr(c, 0, 0, w, h, 10); c.fill();
+  const tmp = document.createElement('canvas'); tmp.width = w * d; tmp.height = h * d;
+  const t2 = tmp.getContext('2d'); t2.scale(d, d); paint(t2, w, h);
+  if (locked) { t2.setTransform(1, 0, 0, 1, 0, 0); t2.globalCompositeOperation = 'source-in'; t2.fillStyle = '#16305a'; t2.fillRect(0, 0, tmp.width, tmp.height); }
+  c.setTransform(1, 0, 0, 1, 0, 0); c.drawImage(tmp, 0, 0);
+}
 function openZukan(tab){
   tab = tab || 'kind';
   const lv = lvOf(st.exp).lv;
@@ -1452,8 +1970,26 @@ function openZukan(tab){
   const tri = `<p class="lead">レベルが あがると ふえていく、グソクムシの ほんとうの話。</p>${TRIVIA.map(t => lv >= t.lv
     ? `<article class="card tri"><h3>${t.t}</h3><p>${t.b}</p></article>`
     : `<article class="card tri lock"><h3>？？？</h3><p>Lv.${t.lv} で ひらく</p></article>`).join('')}`;
-  openSheet('ずかん', `<div class="tabs" role="tablist"><button role="tab" data-tab="kind" aria-selected="${tab === 'kind'}">すがた</button><button role="tab" data-tab="tri" aria-selected="${tab === 'tri'}">まめちしき</button></div>${tab === 'kind' ? kind : tri}`, b => {
+  const nG = Object.keys(st.guests).length, nT = Object.keys(st.treasures).length;
+  const gtab = `<p class="lead">会えた いきもの ${nG} / ${GUESTS.length}　・　すみかに 来た いきものを タップするか、カメラで 撮ると 登録できるよ</p>
+    ${GUESTS.map(d => { const rec = st.guests[d.id], heard = st.heard.includes(d.id);
+      return `<div class="card grow ${rec ? '' : 'lock'}"><canvas data-guest="${d.id}" data-lock="${rec ? 0 : 1}"></canvas><div><b>${rec ? d.name : '？？？'}</b>
+        <small>${rec ? d.fact : (heard ? '日記に 書いてあった だれか。' : '') + d.hint}</small>${rec ? `<span class="cnt">会えた回数 ${rec.n}</span>` : ''}</div></div>`; }).join('')}`;
+  const ttab = `<p class="lead">見つけた たからもの ${nT} / ${TREASURES.length}　・「あそぶ」で 砂を ほると 見つかるよ</p>
+    <div class="tgrid">${TREASURES.map(d => { const n = st.treasures[d.id];
+      return `<div class="card tcard ${n ? '' : 'lock'}"><canvas data-tre="${d.id}" data-lock="${n ? 0 : 1}"></canvas><b>${n ? d.name : '？？？'}</b><small>${n ? `${d.desc}<br>${n}こ` : 'まだ'}</small></div>`; }).join('')}</div>`;
+  const body = {kind, guest:gtab, tre:ttab, tri}[tab] || kind;
+  const tabBtn = (k, label) => `<button role="tab" data-tab="${k}" aria-selected="${tab === k}">${label}</button>`;
+  openSheet('ずかん', `<div class="tabs" role="tablist">${tabBtn('kind', 'すがた')}${tabBtn('guest', 'いきもの')}${tabBtn('tre', 'たからもの')}${tabBtn('tri', 'まめちしき')}</div>${body}`, b => {
     b.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => openZukan(el.dataset.tab)));
+    requestAnimationFrame(() => {
+      b.querySelectorAll('canvas[data-guest]').forEach(el => thumbArt(el, 96, 64, (c, w, h) => {
+        const id = el.dataset.guest, d = GMAP[id], long = d.size > 0.3, S = w * (long ? 0.92 : 0.62);
+        const im = IMG['guest_' + id];
+        c.save(); c.translate(w / 2, d.move === 'floor' ? h * 0.88 : h * 0.52); drawGuestArt(c, id, S, 0.6, im, false); c.restore();
+      }, el.dataset.lock === '1'));
+      b.querySelectorAll('canvas[data-tre]').forEach(el => thumbArt(el, 64, 64, (c, w, h) => drawTreasure(c, el.dataset.tre, w / 2, h * 0.86, w * 0.5), el.dataset.lock === '1'));
+    });
     requestAnimationFrame(() => b.querySelectorAll('canvas[data-pal]').forEach(el => thumbGusoku(el, PAL[el.dataset.pal], el.dataset.pal, el.dataset.lock === '1')));
     b.querySelectorAll('[data-var]').forEach(el => el.addEventListener('click', () => { st.variant = el.dataset.var; save(); openZukan('kind'); }));
   });
@@ -1461,6 +1997,7 @@ function openZukan(tab){
 function openSumika(){
   openSheet('すみかの カスタマイズ', `
     <p class="lead">コインで 飾りを手に入れて、すみかを アレンジしよう。　<span class="coinmark"></span>${st.coins.toLocaleString('ja-JP')}</p>
+    <div class="row" style="margin:-4px 0 14px"><button class="btn primary" id="toLayout" ${st.placed.length ? '' : 'disabled'}>飾りの 場所を 動かす</button></div>
     ${DECOR.map(d => { const own = st.owned.includes(d.id), on = st.placed.includes(d.id);
       return `<div class="card drow"><canvas data-dec="${d.id}"></canvas><div><b>${d.name}</b><small>${d.desc}</small></div>
         ${own ? `<button class="btn ${on ? '' : 'primary'}" data-place="${d.id}">${on ? 'しまう' : '置く'}</button>`
@@ -1474,6 +2011,7 @@ function openSumika(){
       const by = {cave:62, coral:58, lantern:54, whalebone:50, chimney:60, ship:52}[el.dataset.dec];
       drawDecor(c, el.dataset.dec, w / 2, by, sz, false);
     }));
+    b.querySelector('#toLayout').addEventListener('click', () => { closeSheet(); setMode('layout'); });
     b.querySelectorAll('[data-buy]').forEach(el => el.addEventListener('click', () => {
       const d = DECOR.find(x => x.id === el.dataset.buy); if (d.price > st.coins) return;
       st.coins -= d.price; st.owned.push(d.id); st.placed.push(d.id); buildDecor(); save(); hud();
@@ -1488,13 +2026,17 @@ function openSumika(){
   });
 }
 function openSettings(){
-  const days = Math.max(1, Math.ceil((Date.now() - st.created) / DAY));
+  const days = dayNum(), left = REVEAL_DAY - days;
   openSheet('せってい', `
     <div class="field"><label for="setName">なまえ</label><div class="row"><input type="text" id="setName" maxlength="10" value="${esc(st.name)}"><button class="btn" id="saveName">変える</button></div></div>
+    <div class="field"><span class="lab">せいかく</span><div class="card persona">${personaKnown()
+      ? `<b>${P('name')}</b><p>${P('desc')}</p>`
+      : `<b>？？？</b><p>まだ よく わからない。いっしょに すごして ${REVEAL_DAY}日目に わかるよ（あと ${left}日）${days >= 3 ? `<br>最近の ようす：${P('clue')}` : ''}</p>`}</div></div>
     <div class="field"><span class="lab">きろく</span><dl class="stats">
       <div><dt>いっしょにいる日数</dt><dd>${days}日</dd></div><div><dt>脱皮</dt><dd>${st.molts}回</dd></div>
       <div><dt>いちばん長い絶食</dt><dd>${st.maxFast}日</dd></div><div><dt>おそうじ</dt><dd>${st.cleaned}回</dd></div>
-      <div><dt>たすけた回数</dt><dd>${st.flips}回</dd></div><div><dt>なつき度</dt><dd>${Math.round(st.aff)}</dd></div></dl></div>
+      <div><dt>たすけた回数</dt><dd>${st.flips}回</dd></div><div><dt>なつき度</dt><dd>${Math.round(st.aff)}</dd></div>
+      <div><dt>会えた いきもの</dt><dd>${Object.keys(st.guests).length}種</dd></div><div><dt>たからもの</dt><dd>${Object.values(st.treasures).reduce((a, b) => a + b, 0)}こ</dd></div></dl></div>
     <div class="field"><p class="lead" style="margin:0 0 8px">きろくは この端末のブラウザに 保存されます。</p>
       <button class="btn" id="resetBtn">データを 最初からにする</button>
       <div id="resetConfirm" hidden style="margin-top:12px"><p class="lead" style="margin:0 0 8px">いまの グソクムシとの きろくが すべて消えます。</p>
@@ -1503,8 +2045,8 @@ function openSettings(){
     b.querySelector('#resetBtn').addEventListener('click', () => { b.querySelector('#resetConfirm').hidden = false; });
     b.querySelector('#resetNo').addEventListener('click', () => { b.querySelector('#resetConfirm').hidden = true; });
     b.querySelector('#resetYes').addEventListener('click', () => {
-      const n = st.name; st = fresh(n); foods = []; g.mode = 'idle'; g.hideT = 0; g.food = null; buildDecor(); save(); hud(); closeSheet();
-      toast(`あたらしい ${n}が やってきた`);
+      const n = st.name; st = fresh(n); foods = []; guest = null; g.mode = 'idle'; g.hideT = 0; g.food = null; buildDecor(); save(); hud(); closeSheet();
+      toast(`あたらしい ${n}が やってきた`); updateDiaryDot();
     });
   });
 }
@@ -1527,21 +2069,43 @@ function composePhoto(){
 /* ---------- 操作 ---------- */
 function pt(e){ const r = cv.getBoundingClientRect(); return {x:e.clientX - r.left, y:e.clientY - r.top}; }
 function hitG(p){ const L = gL() * dScale(g.d), cxx = gx(), cyy = gy() - L * 0.25; return ((p.x - cxx) / (L * 0.62)) ** 2 + ((p.y - cyy) / (L * 0.4)) ** 2 < 1; }
+function decorAt(p){
+  const list = st.placed.map(id => ({id, pos:decorPos(id)})).sort((a, b) => b.pos.y - a.pos.y);
+  for (const it of list) {
+    const sp = decorSprite(it.id, it.pos.s), x0 = it.pos.x - sp.ox, y0 = it.pos.y - sp.oy;
+    if (p.x > x0 + sp.w * 0.12 && p.x < x0 + sp.w * 0.88 && p.y > y0 + sp.h * 0.12 && p.y < y0 + sp.h + 10) return it;
+  }
+  return null;
+}
 cv.addEventListener('pointerdown', e => {
   if (!started || mode === 'photo' || mode === 'calm') return;
   const p = pt(e);
+  if (mode === 'layout') {
+    const it = decorAt(p);
+    if (it) { drag = {id:it.id, ox:p.x - it.pos.x, oy:p.y - it.pos.y}; selDecor = it.id; try { cv.setPointerCapture(e.pointerId); } catch (_) {} }
+    return;
+  }
   if (mode === 'clean') { scrub = {x:p.x, y:p.y}; sponge = p; rubAt(p.x, p.y, 26 * K); try { cv.setPointerCapture(e.pointerId); } catch (_) {} return; }
+  if (hitGuest(p)) { registerGuest(guest); return; }
+  if (mode === 'dig') { scrub = {x:p.x, y:p.y}; sponge = p; digAt(p.x, p.y, 20 * K); try { cv.setPointerCapture(e.pointerId); } catch (_) {} return; }
   const sh = st.shells.find(s => Math.hypot(s.x * W - p.x, (groundY + s.d * DR - 15 * K - p.y) * 1.3) < 0.08 * W);
   if (sh) { st.shells = st.shells.filter(s => s !== sh); st.coins += 15; floatText('+15', p.x, p.y - 10 * K, '#ffe08a'); sparkle(p.x, p.y, 8); toast('ぬけがらを ひろった（コイン +15）'); hud(); save(); return; }
   if (hitG(p)) { pet(); return; }
   if (st.dirt.some(d => Math.hypot(d.x * W - p.x, groundY + d.d * DR - p.y) < 0.07 * W)) toast('よごれは「おそうじ」で こすって落とせるよ');
 });
 cv.addEventListener('pointermove', e => {
-  if (mode !== 'clean') return;
-  const p = pt(e); sponge = p;
-  if (scrub) { const d = Math.hypot(p.x - scrub.x, p.y - scrub.y); rubAt(p.x, p.y, d); scrub.x = p.x; scrub.y = p.y; }
+  const p = pt(e);
+  if (mode === 'layout') {
+    if (!drag) return;
+    const nx = p.x - drag.ox, ny = p.y - drag.oy;
+    st.layout[drag.id] = {x:clamp(nx / W, 0.04, 0.96), v:clamp((ny - yTop) / (yBot - yTop), 0, 1)};
+    buildDecor(); return;
+  }
+  if (mode !== 'clean' && mode !== 'dig') return;
+  sponge = p;
+  if (scrub) { const d = Math.hypot(p.x - scrub.x, p.y - scrub.y); if (mode === 'clean') rubAt(p.x, p.y, d); else digAt(p.x, p.y, d); scrub.x = p.x; scrub.y = p.y; }
 });
-const endScrub = e => { scrub = null; if (e.pointerType !== 'mouse') sponge = null; };
+const endScrub = e => { scrub = null; if (e.pointerType !== 'mouse') sponge = null; if (drag) { drag = null; save(); } };
 cv.addEventListener('pointerup', endScrub); cv.addEventListener('pointercancel', endScrub);
 cv.addEventListener('pointerleave', () => { if (!scrub) sponge = null; });
 
@@ -1554,6 +2118,16 @@ $('#actClean').addEventListener('click', () => {
 $('#hintDone').addEventListener('click', () => setMode('normal'));
 $('#actPet').addEventListener('click', () => { setMode('normal'); pet(); });
 $('#actCalm').addEventListener('click', () => setMode('calm'));
+$('#actPlay').addEventListener('click', () => {
+  if (mode === 'dig') { setMode('normal'); return; }
+  if (g.mode === 'molt') { toast('脱皮中は じっとしていたいみたい'); return; }
+  if (!digLeft()) { toast('きょうの たからものは ぜんぶ 見つけた。また あした あそぼう'); return; }
+  setMode('dig'); say('くんくん…', 1.6);
+});
+$('#digDone').addEventListener('click', () => setMode('normal'));
+$('#btnDiary').addEventListener('click', () => { setMode('normal'); openDiary(); });
+$('#layoutDone').addEventListener('click', () => { setMode('normal'); save(); toast('すみかの 配置を 保存したよ'); });
+$('#layoutReset').addEventListener('click', () => { st.layout = {}; buildDecor(); save(); });
 $('#calmEnd').addEventListener('click', () => {
   const m = Math.floor(calmT / 60); setMode('normal');
   if (calmT >= 20) toast(m >= 1 ? `${m}分 そっと見守った。${st.name}も おちついたみたい` : `${st.name}は おちついているみたい`);
@@ -1566,6 +2140,7 @@ $('#photoClose').addEventListener('click', () => setMode('normal'));
 $('#shutter').addEventListener('click', () => {
   const f = $('#flash'); f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
   setTimeout(() => {
+    if (guestOnScreen()) registerGuest(guest, true);
     const url = composePhoto();
     if (!url) { toast('しゃしんを つくれなかった。画像素材の置き場所を たしかめてね'); return; }
     openSheet('しゃしん', `<figure class="photo"><img src="${url}" alt="${esc(st.name)}の しゃしん"><figcaption>画像を 長押し（パソコンは 右クリック）で 保存できます</figcaption></figure>`);
@@ -1580,8 +2155,10 @@ function applyOffline(){
     for (let i = 0; i < nd; i++) st.dirt.push(mkDirt());
     st.stress = 0;
     msgs.push(`おかえり！ ${fmtDur(el)}ぶり`);
-    if (nd > 0) msgs.push(`よごれが ${nd}つ ふえてるよ`);
-    if (st.lastFed && el > DAY) msgs.push(`${st.name}は ${fastDays()}日 なにも食べずに 元気にしてた`);
+    const made = absenceDiary(st.lastSeen, Date.now());
+    if (nd > 0) addDiary(`よごれが ${nd}つ ふえていた`, Date.now() - 1000);
+    if (made) { msgs.push('おるすばん日記が 書かれているよ'); setTimeout(() => { if (sheet.hidden && mode === 'normal') openDiary(); }, 2200); }
+    else if (nd > 0) msgs.push(`よごれが ${nd}つ ふえてるよ`);
   } else msgs.push(`${st.name}が まってたよ`);
   msgs.forEach(toast);
 }
@@ -1590,8 +2167,10 @@ function begin(isNew){
   started = true; app.dataset.started = '1';
   $('#titleScreen').classList.add('hide'); setTimeout(() => { $('#titleScreen').hidden = true; }, 650);
   buildDecor(); g.hideT = 0; g.food = null; foods = [];
-  if (isNew) { toast(`${st.name}が やってきた！`); toast('まずは「エサ」を あげてみよう'); flipTimer = 240; }
+  if (isNew) { toast(`${st.name}が やってきた！`); toast('まずは「エサ」を あげてみよう'); flipTimer = 240; addDiary(`${st.name}が すみかに やってきた`); st.diaryRead = Date.now(); }
   else applyOffline();
+  guestTimer = isNew ? 70 : 40; guest = null; updateDiaryDot();
+  setTimeout(checkPersonaReveal, 3500);
   if (st.molt) g.mode = 'molt';
   hud(); save(); checkStage();
 }
@@ -1601,7 +2180,7 @@ function showTitle(){
   if (saved && saved.v === 1) {
     st = Object.assign(fresh(saved.name), saved);
     $('#newBox').hidden = true; $('#contMsg').hidden = false;
-    $('#contMsg').innerHTML = `<b style="color:var(--ink)">${esc(st.name)}</b>（Lv.${lvOf(st.exp).lv}）が まってるよ`;
+    $('#contMsg').innerHTML = `<b style="color:var(--ink)">${esc(st.name)}</b>（Lv.${lvOf(st.exp).lv}${personaKnown() ? '・' + P('name') : ''}）が まってるよ`;
     $('#startBtn').textContent = 'つづきから'; $('#restartLink').hidden = false;
     $('#startBtn').onclick = () => begin(false);
     $('#restartLink').onclick = () => {
