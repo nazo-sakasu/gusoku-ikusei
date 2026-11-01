@@ -123,8 +123,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--glow);outline-o
 .tcard b{font-size:12px}
 .tcard small{font-size:11px;color:var(--mute);line-height:1.5}
 .tcard.lock b{color:var(--mute)}
-.tabs{gap:2px;max-width:100%}
-.tabs button{padding:0 9px;font-size:12.5px;white-space:nowrap}
+.tabs{gap:2px;width:100%;max-width:420px}
+.tabs button{flex:1;min-width:0;padding:0 4px;font-size:12.5px;white-space:nowrap}
 .persona{padding:12px 14px}
 .persona b{font-family:var(--f-display);font-weight:500;font-size:17px;color:#f0f8ff}
 .persona p{margin:4px 0 0;font-size:13px;line-height:1.7;color:#c9dcf0}
@@ -482,13 +482,13 @@ function checkPersonaReveal(){
 /* ---------- お客さんの生きもの ---------- */
 const isNight = () => { const h = new Date().getHours(); return h >= 18 || h < 6; };
 const GUESTS = [
-  {id:'mendako', name:'メンダコ', move:'swim', size:0.15, w:30, hr:0.36,
+  {id:'mendako', name:'メンダコ', move:'swim', size:0.2, w:30, hr:0.36,
     fact:'タコの なかま。耳のように 見えるのは ヒレで、これを パタパタ 動かして 泳ぐ。水深 200〜1000mほどの 海の底に すむ。', hint:'ときどき ふわふわ 泳いでくるらしい'},
-  {id:'nuta', name:'ヌタウナギ', move:'floor', size:0.3, w:24, hr:0.1,
+  {id:'nuta', name:'ヌタウナギ', move:'floor', size:0.36, w:24, hr:0.1,
     fact:'あごの ない、とても古いタイプの 魚。敵に おそわれると、体から 大量の ネバネバを 出して 身を守る。', hint:'海の底を にょろにょろ 通っていくらしい'},
   {id:'takaashi', name:'タカアシガニ', move:'floor', size:0.42, w:18, hr:0.32,
     fact:'あしを 広げると 3mを こえることも ある、世界最大級の カニ。日本の まわりの 深い海に すんでいる。', hint:'長い あしで 海の底を 歩いてくるらしい'},
-  {id:'anko', name:'チョウチンアンコウ', move:'swim', size:0.18, w:18, hr:0.34, need:s => s.placed.includes('lantern'),
+  {id:'anko', name:'チョウチンアンコウ', move:'swim', size:0.23, w:18, hr:0.34, need:s => s.placed.includes('lantern'),
     fact:'頭の先の「ちょうちん」を 光らせて、小さな魚を おびきよせる。光っているのは、ちょうちんの中に すむ 光る細菌。', hint:'ガラスのランタンの 灯りに さそわれて 来るらしい'},
   {id:'koshiori', name:'ゴエモンコシオリエビ', move:'floor', size:0.11, w:16, hr:0.28, need:s => s.placed.includes('chimney'),
     fact:'海の底から 熱い水が わき出る 場所の 近くに すむ。胸の 毛で 細菌を 育てて、それを 食べていると 考えられている。', hint:'熱水チムニーの そばに あらわれるらしい'},
